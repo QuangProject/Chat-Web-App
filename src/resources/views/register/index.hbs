@@ -1,26 +1,104 @@
-<div class="container-login">
+<div class="container-register">
     <div class="card">
-        <h2>Create an Account</h2>
+        <h2 class="mb-5">Create an Account</h2>
         <form id="register-form">
             <div class="input-container">
-                <input type="text" id="register-username">
-                <label for="register-username">Username</label>
+                <input type="text" id="register-username" name="username" class="input-register">
+                <label for="register-username" class="label-register">Username</label>
             </div>
             <div class="input-container">
-                <input type="password" id="register-password">
-                <label for="register-password">Password</label>
+                <input type="password" id="register-password" name="password" class="input-register">
+                <label for="register-password" class="label-register">Password</label>
             </div>
             <div class="input-container">
-                <input type="text" id="register-name">
-                <label for="register-name">Full Name</label>
+                <input type="password" id="register-confirm-password" name="confirm-password" class="input-register">
+                <label for="register-confirm-password" class="label-register">Confirm Password</label>
             </div>
             <div class="input-container">
-                <input type="email" id="register-email">
-                <label for="register-email">Email</label>
+                <input type="text" id="register-first-name" name="first-name" class="input-register">
+                <label for="register-first-name" class="label-register">First Name</label>
             </div>
-            <button type="submit">Register</button>
-            <p id="register-error" class="error-message"></p>
+            <div class="input-container">
+                <input type="text" id="register-last-name" name="last-name" class="input-register">
+                <label for="register-last-name" class="label-register">Last Name</label>
+            </div>
+            <div class="input-container">
+                <input type="text" id="register-email" name="email" class="input-register">
+                <label for="register-email" class="label-register">Email</label>
+            </div>
+            <button type="submit" class="button-register">Register</button>
+            <p id="register-error" class="error-message">
+                {{#if error }}
+                {{ error }}
+                {{/if}}
+            </p>
         </form>
-        <p class="login-link">Already have an account? <a href="login.html">Login here</a></p>
+        <p class="login-link">Already have an account? <a href="/login">Login here</a></p>
     </div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"
+    integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    // Register form submit event handler
+    $("#register-form").submit(function (e) {
+        e.preventDefault();
+
+        var email_pattern = /^[a-zA-Z]\w*(\.\w+)*\@\w+(\.\w{2,3})+$/;
+
+        const usernameInput = document.getElementById("register-username");
+        const passwordInput = document.getElementById("register-password");
+        const confirmPasswordInput = document.getElementById("register-confirm-password");
+        const firstNameInput = document.getElementById("register-first-name");
+        const lastNameInput = document.getElementById("register-last-name");
+        const emailInput = document.getElementById("register-email");
+        const registerError = document.getElementById("register-error");
+
+        const username = usernameInput.value;
+        const password = passwordInput.value;
+        const confirmPassword = confirmPasswordInput.value;
+        const firstName = firstNameInput.value;
+        const lastName = lastNameInput.value;
+        const email = emailInput.value;
+
+        // Validate input fields
+        if (!username || !password || !confirmPassword || !firstName || !lastName || !email) {
+            registerError.textContent = "Please fill in all fields.";
+            return;
+        }
+
+        // Check if password and confirm do not match
+        if (password != confirmPassword) {
+            registerError.textContent = "Password and confirm do not match.";
+            return;
+        }
+
+        // Validate email
+        if (email_pattern.test(email) == false) {
+            registerError.textContent = "Invalid email.";
+            return;
+        }
+
+        const data = { username, password, firstName, lastName, email }
+
+        $.ajax({
+            url: "/register/save",
+            type: "post",
+            data: data,
+
+            success: function (result, status, xhr) {
+                Swal.fire(
+                    'Success',
+                    'You registered successfully!!!',
+                    'success'
+                ).then((result) => {
+                    window.location.href = '/login';
+                })
+            },
+            error: function (xhr, status, error) {
+                console.log(xhr);
+            }
+        });
+    });
+</script>

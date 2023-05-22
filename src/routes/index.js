@@ -1,3 +1,4 @@
+const siteRouter = require('./site')
 const messageRouter = require('./message')
 const inboxRouter = require('./inbox')
 const friendRequestRouter = require('./friend-request')
@@ -12,6 +13,7 @@ function route(app) {
     app.use('/friend-request', friendRequestRouter)
     app.use('/inbox', inboxRouter)
     app.use('/message', messageRouter)
+    app.use('/', siteRouter)
 }
 
 module.exports = route;

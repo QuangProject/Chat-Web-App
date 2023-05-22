@@ -1,18 +1,60 @@
 <div class="container-login">
     <div class="card">
-        <h2>Login</h2>
+        <h2 class="mb-5">Login</h2>
         <form id="login-form">
             <div class="input-container">
-                <input type="text" id="login-username">
-                <label for="login-username">Username</label>
+                <input type="text" id="login-username" class="input-login">
+                <label for="login-username" class="label-login">Username</label>
             </div>
             <div class="input-container">
-                <input type="password" id="login-password">
-                <label for="login-password">Password</label>
+                <input type="password" id="login-password" class="input-login">
+                <label for="login-password" class="label-login">Password</label>
             </div>
-            <button type="submit">Login</button>
+            <button type="submit" class="button-login">Login</button>
             <p id="login-error" class="error-message"></p>
         </form>
-        <p class="register-link">Don't have an account? <a href="register.html">Register here</a></p>
+        <p class="register-link">Don't have an account? <a href="/register">Register here</a></p>
     </div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"
+    integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    // Login form submit event handler
+    $("#login-form").submit(function (e) {
+        e.preventDefault();
+
+        const usernameInput = document.getElementById("login-username");
+        const passwordInput = document.getElementById("login-password");
+        const loginError = document.getElementById("login-error");
+
+        const username = usernameInput.value;
+        const password = passwordInput.value;
+
+        // Validate input fields
+        if (!username || !password) {
+            loginError.textContent = "Please fill in all fields.";
+            return;
+        }
+
+        const data = { username, password }
+
+        $.ajax({
+            url: "/login/auth",
+            type: "post",
+            data: data,
+
+            success: function (result, status, xhr) {
+                if (result.status == 'fail') {
+                    loginError.textContent = result.msg;
+                } else {
+                    window.location.href = '/'
+                }
+            },
+            error: function (xhr, status, error) {
+                console.log(xhr);
+            }
+        });
+    });
+
+</script>
