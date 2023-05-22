@@ -3,7 +3,11 @@ const { User } = require('../models/User')
 
 class RegisterController {
     async index(req, res) {
-        res.render('register/index')
+        if (req.session.user) {
+            res.redirect('/')
+        } else {
+            res.render('register/index')
+        }
     }
 
     async save(req, res) {
@@ -25,7 +29,7 @@ class RegisterController {
                 const salt = await bcrypt.genSalt(10)
                 const hashed = await bcrypt.hash(password, salt)
 
-                User.create(username, hashed, firstName, lastName, email, 'active')
+                User.create(username, hashed, firstName, lastName, email, 'active', false)
                     .then(data => {
                         res.json({
                             status: "successfully"

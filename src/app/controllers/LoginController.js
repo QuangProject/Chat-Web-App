@@ -3,7 +3,11 @@ const { User } = require('../models/User')
 
 class LoginController {
     async index(req, res) {
-        res.render('login/index')
+        if (req.session.user) {
+            res.redirect('/')
+        } else {
+            res.render('login/index')
+        }
     }
 
     async auth(req, res) {
@@ -16,7 +20,11 @@ class LoginController {
                     user.rows[0].password
                 )
                 if (validPass) {
-                    req.session.user = { username: user.rows[0].username, role: user.rows[0].status }
+                    req.session.user = { 
+                        username: user.rows[0].username, 
+                        status: user.rows[0].status,
+                        isAdmin: user.rows[0].is_admin
+                    }
                     res.json({
                         status: "success"
                     })

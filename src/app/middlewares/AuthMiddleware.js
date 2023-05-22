@@ -1,24 +1,16 @@
 class AuthMiddleware {
-    loggedin(req, res, next) {
+    // User login to access
+    isAuth(req, res, next) {
         if (req.session.user) {
             res.locals.user = req.session.user
-            next();
+            next()
         } else {
             res.redirect('/login')
         }
     }
 
-    isAuth(req, res, next) {
-        if (req.session.user) {
-            res.locals.user = req.session.user
-            res.redirect('/')
-        } else {
-            next()
-        }
-    }
-
+    // User or admin can access
     freedom(req, res, next) {
-        console.log(req.session.user)
         if (req.session.user) {
             res.locals.user = req.session.user
             next()
@@ -27,8 +19,9 @@ class AuthMiddleware {
         }
     }
 
-    admin(req, res, next) {
-        if (req.session.user && req.session.user.role) {
+    // Only admin can access
+    isAdmin(req, res, next) {
+        if (req.session.user && req.session.user.isAdmin) {
             res.locals.user = req.session.user
             next()
         } else if (req.session.user && !req.session.user.role) {

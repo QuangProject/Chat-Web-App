@@ -5,10 +5,10 @@ const db = require("../../config/db");
 const User = {};
 
 // CREATE USER
-User.create = (username, password, firstName, lastName, email, status) => {
-    return db.query(`INSERT INTO users (username, password, first_name, last_name, email, status) 
-                    VALUES($1, $2, $3, $4, $5, $6) RETURNING *`,
-    [username, password, firstName, lastName, email, status]);
+User.create = (username, password, firstName, lastName, email, status, isAdmin) => {
+    return db.query(`INSERT INTO users (username, password, first_name, last_name, email, status, is_admin) 
+                    VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
+    [username, password, firstName, lastName, email, status, isAdmin]);
 };
 
 // REGISTER USER
