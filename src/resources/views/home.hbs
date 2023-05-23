@@ -3,7 +3,11 @@
         <div class="hero-content">
             <h2>Connect and Chat</h2>
             <p>Join the conversation with friends and colleagues.</p>
+            {{#if user }}
+            <a href="/inbox" class="btn-homepage">Get Started</a>
+            {{else}}
             <a href="/login" class="btn-homepage">Get Started</a>
+            {{/if}}
         </div>
     </section>
 

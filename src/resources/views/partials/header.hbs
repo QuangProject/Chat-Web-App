@@ -5,7 +5,7 @@
                 <img src="img/logo.png" alt="Logo" width="50px">
             </a>
 
-            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0 fw-bold">
+            <ul class="nav col-12 col-lg-auto me-lg-auto my-3 my-lg-0 justify-content-center fw-bold">
                 <li><a href="/" class="nav-link px-3 link-dark">Home</a></li>
                 <li><a href="/inbox" class="nav-link px-3 link-dark">Inbox</a></li>
                 <li><a href="/send-request" class="nav-link px-3 link-dark">Find Friend</a></li>
@@ -13,16 +13,12 @@
                 <li><a href="/list-friend" class="nav-link px-3 link-dark">List Friend</a></li>
             </ul>
 
-            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-                <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
-            </form>
-
-            <div class="dropdown text-end">
+            <div class="dropdown text-end d-flex">
                 {{#if user }}
                 <div>
                     <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1"
                         data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+                        <img src="img/default-avatar.png" alt="mdo" width="32" height="32" class="rounded-circle">
                     </a>
                     <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1" style="">
                         <li><a class="dropdown-item" href="#">Hi, {{ user.username }}</a></li>
@@ -34,10 +30,18 @@
                     </ul>
                 </div>
                 {{else}}
-                <div>
-                    <a href="/login" class="btn btn-outline-dark me-2" role="button">Login</a>
-                    <a href="/register" class="btn btn-primary" role="button">Sign-up</a>
-                </div>
+                <a href="/login" class="btn-login me-2" role="button">
+                    Login
+                    <div class="arrow-wrapper">
+                        <div class="arrow"></div>
+                    </div>
+                </a>
+                <a href="/register" class="btn-signup" role="button">
+                    Sign up
+                    <div class="arrow-wrapper">
+                        <div class="arrow"></div>
+                    </div>
+                </a>
                 {{/if}}
             </div>
         </div>

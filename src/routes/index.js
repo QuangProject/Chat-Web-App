@@ -12,7 +12,7 @@ const authMiddleware = require('../app/middlewares/AuthMiddleware')
 function route(app) {
     app.use('/register', registerRouter)
     app.use('/login', loginRouter)
-    app.use('/send-request', sendRequestRouter)
+    app.use('/send-request', authMiddleware.isAuth, sendRequestRouter)
     app.use('/list-friend', authMiddleware.isAuth, listFriendRouter)
     app.use('/friend-request', authMiddleware.isAuth, friendRequestRouter)
     app.use('/inbox', authMiddleware.isAuth, inboxRouter)

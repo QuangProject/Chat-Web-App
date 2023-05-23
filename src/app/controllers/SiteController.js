@@ -1,11 +1,19 @@
 class SiteController {
-    async index(req, res) {
+    index(req, res) {
         res.render('home')
     }
 
+    profile(req, res) {
+        res.render('site/profile')
+    }
+
     logout(req, res) {
-        req.session.destroy();
-        res.redirect('/');
+        if (req.session.user) {
+            req.session.destroy();
+            res.redirect('/');
+        } else {
+            res.render('login/index')
+        }
     }
 }
 

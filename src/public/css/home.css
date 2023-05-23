@@ -32,7 +32,8 @@
   font-size: 18px;
   transition: background-color 0.3s ease; }
   .btn-homepage:hover {
-    background-color: #555; }
+    background-color: #555;
+    color: #fff; }
 
 .features {
   display: flex;

@@ -5,6 +5,10 @@
     font-family: "Quicksand", sans-serif;
 }
 
+body {
+    background-color: #f1f1f1;
+}
+
 .header {
     background-color: #333;
     color: #fff;
@@ -38,6 +42,132 @@ nav {
             }
         }
     }
+}
+
+// Login
+.btn-login {
+    --primary-color: #dbdbdb;
+    --secondary-color: #111;
+    --hover-color: #fff;
+    --arrow-width: 10px;
+    --arrow-stroke: 2px;
+    box-sizing: border-box;
+    border: 0;
+    border-radius: 10px;
+    color: var(--secondary-color);
+    padding: 0.375rem 0.75rem;
+    background: var(--primary-color);
+    display: flex;
+    transition: 0.2s background;
+    align-items: center;
+    gap: 0.6em;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.btn-login .arrow-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-login .arrow {
+    margin-top: 1px;
+    width: var(--arrow-width);
+    background: var(--primary-color);
+    height: var(--arrow-stroke);
+    position: relative;
+    transition: 0.2s;
+}
+
+.btn-login .arrow::before {
+    content: "";
+    box-sizing: border-box;
+    position: absolute;
+    border: solid var(--secondary-color);
+    border-width: 0 var(--arrow-stroke) var(--arrow-stroke) 0;
+    display: inline-block;
+    top: -3px;
+    right: 3px;
+    transition: 0.2s;
+    padding: 3px;
+    transform: rotate(-45deg);
+}
+
+.btn-login:hover {
+    background-color: var(--hover-color);
+    color: var(--secondary-color);
+}
+
+.btn-login:hover .arrow {
+    background: var(--secondary-color);
+}
+
+.btn-login:hover .arrow:before {
+    right: 0;
+}
+
+// Sign up
+.btn-signup {
+    --primary-color: #645bff;
+    --secondary-color: #fff;
+    --hover-color: #111;
+    --arrow-width: 10px;
+    --arrow-stroke: 2px;
+    box-sizing: border-box;
+    border: 0;
+    border-radius: 10px;
+    color: var(--secondary-color);
+    padding: 0.375rem 0.75rem;
+    background: var(--primary-color);
+    display: flex;
+    transition: 0.2s background;
+    align-items: center;
+    gap: 0.6em;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.btn-signup .arrow-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-signup .arrow {
+    margin-top: 1px;
+    width: var(--arrow-width);
+    background: var(--primary-color);
+    height: var(--arrow-stroke);
+    position: relative;
+    transition: 0.2s;
+}
+
+.btn-signup .arrow::before {
+    content: "";
+    box-sizing: border-box;
+    position: absolute;
+    border: solid var(--secondary-color);
+    border-width: 0 var(--arrow-stroke) var(--arrow-stroke) 0;
+    display: inline-block;
+    top: -3px;
+    right: 3px;
+    transition: 0.2s;
+    padding: 3px;
+    transform: rotate(-45deg);
+}
+
+.btn-signup:hover {
+    background-color: var(--hover-color);
+    color: var(--secondary-color);
+}
+
+.btn-signup:hover .arrow {
+    background: var(--secondary-color);
+}
+
+.btn-signup:hover .arrow:before {
+    right: 0;
 }
 
 footer {
