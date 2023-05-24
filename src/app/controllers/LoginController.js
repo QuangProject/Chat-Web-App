@@ -28,29 +28,25 @@ class LoginController {
                         status: user.rows[0].status,
                         isAdmin: user.rows[0].is_admin
                     }
-                    res.json({
+                    res.status(200).json({
                         status: "success"
                     })
                 } else {
                     const conflicError = "Password is not correct"
-                    res.json({
+                    res.status(200).json({
                         status: "fail",
                         msg: conflicError
                     })
                 }
             } else {
                 const conflicError = "User is not exist"
-                res.json({
+                res.status(200).json({
                     status: "fail",
                     msg: conflicError
                 })
             }
         } catch (err) {
-            const conflicError = "Something is error"
-            res.json({
-                status: "fail",
-                msg: conflicError
-            })
+            return res.status(500).json({ error: 'Error logging in' });
         }
     }
 }

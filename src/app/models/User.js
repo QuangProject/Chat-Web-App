@@ -16,4 +16,11 @@ User.getOne = (username) => {
     return db.query(`SELECT * FROM users WHERE username = $1`, [username]);
 };
 
+// UPDATE AN USER
+User.editProfile = (username, firstName, lastName, gender, birthday, telephone, address, avatar) => {
+    return db.query(`UPDATE users SET first_name = $2, last_name = $3, gender = $4, birthday = $5, telephone = $6, address = $7, avatar = $8 WHERE username = $1 RETURNING *`, [
+        username, firstName, lastName, gender, birthday, telephone, address, avatar
+    ]);
+};
+
 module.exports = { User };

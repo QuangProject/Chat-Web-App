@@ -16,9 +16,7 @@ class RegisterController {
     async save(req, res) {
         try {
             const { username, password, firstName, lastName, gender, birthday, email, telephone, address } = req.body
-
             const user = await User.getOne(username)
-
             if (user.rowCount == 1) {
                 const conflicError = "Username already exists"
                 res.json({
@@ -31,24 +29,17 @@ class RegisterController {
 
                 User.create(username, hashed, firstName, lastName, gender, birthday, email, telephone, address, 'active', false)
                     .then(data => {
-                        res.json({
-                            status: "successfully"
+                        res.status(200).json({
+                            status: "success",
+                            msg: "You have successfully registered a new account"
                         })
                     })
                     .catch(err => {
-                        const conflicError = "Something is error create account"
-                        res.json({
-                            status: "fail",
-                            msg: conflicError
-                        })
+                        return res.status(500).json({ error: 'Error registering a new account' });
                     });
             }
         } catch (error) {
-            const conflicError = "Something is error"
-            res.json({
-                status: "fail",
-                msg: conflicError
-            })
+            return res.status(500).json({ error: 'Error registering a new account' });
         }
     }
 }

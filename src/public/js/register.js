@@ -55,6 +55,19 @@ $("#register-form").submit(function (e) {
         return;
     }
 
+    // Validate birthday
+    var today = new Date();
+    var birthDate = new Date(birthday);
+    var age = today.getFullYear() - birthDate.getFullYear();
+    var month = today.getMonth() - birthDate.getMonth();
+    if (month < 0 || (month === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+    }
+    if (age < 12) {
+        registerError.textContent = "You must be at least 12 years old.";
+        return;
+    }
+
     // Validate email
     if (email_pattern.test(email) == false) {
         registerError.textContent = "Invalid email.";
@@ -74,21 +87,25 @@ $("#register-form").submit(function (e) {
         type: "post",
         data: data,
 
-        success: function (result, status, xhr) {
+        success: function (result) {
             if (result.status == 'fail') {
                 registerError.textContent = result.msg;
             } else {
                 Swal.fire(
                     'Success',
-                    'You registered successfully!!!',
+                    result.msg,
                     'success'
-                ).then((result) => {
+                ).then(() => {
                     window.location.href = '/login';
                 })
             }
         },
-        error: function (xhr, status, error) {
-            console.log(xhr);
+        error: function (error) {
+            Swal.fire(
+                'Error',
+                error.responseJSON.error,
+                'error'
+            )
         }
     });
 });

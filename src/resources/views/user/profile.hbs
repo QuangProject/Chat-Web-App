@@ -6,7 +6,7 @@
                     <div class="card">
                         <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
                             {{#if user.avatar}}
-                            <img src="/img/{{user.avatar}}" alt="Profile" class="rounded-circle">
+                            <img src="{{user.avatar}}" alt="Profile" class="rounded-circle">
                             {{else}}
                             <img src="/img/default-avatar.png" alt="Profile" class="rounded-circle">
                             {{/if}}
@@ -83,7 +83,7 @@
 
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label">Birthday</div>
-                                        <div class="col-lg-9 col-md-8">{{dateFormat user.birthdate "MMMM Do, yyyy"}}
+                                        <div class="col-lg-9 col-md-8">{{dateFormat user.birthday 'MMMM Do, yyyy'}}
                                         </div>
                                     </div>
 
@@ -107,7 +107,7 @@
                                 <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
                                     <!-- Profile Edit Form -->
-                                    <form id="profile-form" method="post" action="/user/edit/save" enctype="multipart/form-data">
+                                    <form id="profile-form" enctype="multipart/form-data">
                                         <p id="profile-error" class="text-danger text-center"></p>
                                         <div class="row mb-3">
                                             <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">
@@ -117,13 +117,13 @@
 
                                             <div class="col-md-8 col-lg-9">
                                                 {{#if user.avatar}}
-                                                <img src="/img/{{user.avatar}}" id="changeImage" alt="Profile">
+                                                <img src="{{user.avatar}}" id="changeImage" alt="Profile">
                                                 {{else}}
                                                 <img src="/img/default-avatar.png" id="changeImage" alt="Profile">
                                                 {{/if}}
                                                 <div class="pt-2">
                                                     <input class="btn btn-primary btn-sm" type="file" id="changePic"
-                                                        name="img-profile" />
+                                                        name="img_profile" />
                                                     <a class="btn btn-danger btn-sm" title="Remove my profile image"><i
                                                             class="fa-solid fa-trash-can"></i></a>
                                                 </div>
@@ -134,8 +134,8 @@
                                             <label class="col-md-4 col-lg-3 col-form-label" for="first-name">First
                                                 Name</label>
                                             <div class="col-md-8 col-lg-9">
-                                                <input class="form-control" type="text" id="first-name"
-                                                    name="first_name" value="{{user.first_name}}" />
+                                                <input class="form-control" type="text" id="first-name" name="firstName"
+                                                    autocomplete="off" value="{{user.first_name}}" />
                                             </div>
                                         </div>
 
@@ -143,8 +143,8 @@
                                             <label class="col-md-4 col-lg-3 col-form-label" for="last-name">Last
                                                 Name</label>
                                             <div class="col-md-8 col-lg-9">
-                                                <input class="form-control" type="text" id="last-name" name="last_name"
-                                                    value="{{user.last_name}}" />
+                                                <input class="form-control" type="text" id="last-name" name="lastName"
+                                                    autocomplete="off" value="{{user.last_name}}" />
                                             </div>
                                         </div>
 
@@ -183,7 +183,7 @@
                                                 for="birthday">Birthday</label>
                                             <div class="col-md-8 col-lg-9">
                                                 <input type="date" class="form-control" id="birthday" name="birthday"
-                                                    value="{{dateFormat user.birthdate 'YYYY-MM-DD'}}">
+                                                    value="{{dateFormat user.birthday 'YYYY-MM-DD'}}">
                                             </div>
                                         </div>
 
@@ -192,7 +192,7 @@
                                                 for="address">Address</label>
                                             <div class="col-md-8 col-lg-9">
                                                 <input class="form-control" type="text" id="address" name="address"
-                                                    value="{{user.address}}" />
+                                                    autocomplete="off" value="{{user.address}}" />
                                             </div>
                                         </div>
 
@@ -201,7 +201,7 @@
                                                 number</label>
                                             <div class="col-md-8 col-lg-9">
                                                 <input class="form-control" type="tel" id="telephone" name="telephone"
-                                                    value="{{user.telephone}}" />
+                                                    autocomplete="off" value="{{user.telephone}}" />
                                             </div>
                                         </div>
 

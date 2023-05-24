@@ -22,15 +22,19 @@ $("#login-form").submit(function (e) {
         type: "post",
         data: data,
 
-        success: function (result, status, xhr) {
+        success: function (result) {
             if (result.status == 'fail') {
                 loginError.textContent = result.msg;
             } else {
                 window.location.href = '/'
             }
         },
-        error: function (xhr, status, error) {
-            console.log(xhr);
+        error: function (error) {
+            Swal.fire(
+                'Error',
+                error.responseJSON.error,
+                'error'
+            )
         }
     });
 });
