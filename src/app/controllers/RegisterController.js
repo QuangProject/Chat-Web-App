@@ -27,7 +27,7 @@ class RegisterController {
                 const salt = await bcrypt.genSalt(10)
                 const hashed = await bcrypt.hash(password, salt)
 
-                User.create(username, hashed, firstName, lastName, gender, birthday, email, telephone, address, 'active', false)
+                User.create(username, hashed, firstName, lastName, gender, birthday, email, telephone, address, null, 'active', false)
                     .then(data => {
                         res.status(200).json({
                             status: "success",

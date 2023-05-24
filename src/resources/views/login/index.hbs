@@ -7,7 +7,11 @@
                     <h3 class="mb-5 text-center">Login to <strong>Chat App</strong></h3>
                     <form id="login-form" method="post">
 
-                        <p id="login-error" class="text-danger text-center"></p>
+                        <p id="login-error" class="text-danger text-center">
+                            {{#if error}}
+                            {{error}}
+                            {{/if}}
+                        </p>
 
                         <div class="form-group first">
                             <label for="login-username" class="form-label fw-bold">Username</label>
@@ -37,13 +41,12 @@
                         <div class="or-label">OR</div>
                         <div class="line-separator"></div>
                     </div>
-                    <form id="external-account gSignInWrapper" asp-page="./ExternalLogin"
-                        asp-route-returnUrl="@Model.ReturnUrl" method="post" class="text-center">
-                        <button type="submit" id="customBtn" class="customGPlusSignIn" name="provider" value="Google">
+                    <div id="external-account gSignInWrapper" class="text-center">
+                        <a href="/login/google" id="customBtn" class="customGPlusSignIn">
                             <span class="icon"></span>
                             <span class="buttonText">Sign in with Google</span>
-                        </button>
-                    </form>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

@@ -71,7 +71,8 @@
                                             <div class="form-check form-check-inline mb-0 me-4">
                                                 <input class="form-check-input" type="radio" name="gender"
                                                     id="register-female-gender" autocomplete="off" value="false" />
-                                                <label class="form-check-label" for="register-female-gender">Female</label>
+                                                <label class="form-check-label"
+                                                    for="register-female-gender">Female</label>
                                             </div>
                                         </div>
                                     </div>
@@ -113,14 +114,12 @@
                                     <div class="or-label">OR</div>
                                     <div class="line-separator"></div>
                                 </div>
-                                <form id="external-account gSignInWrapper" asp-page="./ExternalLogin"
-                                    asp-route-returnUrl="@Model.ReturnUrl" method="post" class="text-center">
-                                    <button type="submit" id="customBtn" class="customGPlusSignIn" name="provider"
-                                        value="Google">
+                                <div id="external-account gSignInWrapper" class="text-center">
+                                    <a href="/login/google" id="customBtn" class="customGPlusSignIn text-decoration-none">
                                         <span class="icon"></span>
-                                        <span class="buttonText">Sign up with Google</span>
-                                    </button>
-                                </form>
+                                        <span class="buttonText">Sign in with Google</span>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>

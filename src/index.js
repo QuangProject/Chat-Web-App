@@ -9,6 +9,7 @@ const bodyParser = require('body-parser');
 require('dotenv').config()
 const db = require('./config/db')
 const route = require('./routes')
+const passport = require('passport');
 
 // Middleware for parsing JSON data
 app.use(bodyParser.json());
@@ -92,6 +93,18 @@ app.use(session({
         maxAge: 1000 * 60 * 60 * 24
     }
 }))
+
+//Auth Google
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.serializeUser(function (user, cb) {
+    cb(null, user);
+});
+
+passport.deserializeUser(function (obj, cb) {
+    cb(null, obj);
+});
 
 // HTTP logger
 app.use(morgan('combined'))
