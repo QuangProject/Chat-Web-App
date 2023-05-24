@@ -1,54 +1,46 @@
-.main-friend-request {
-  padding: 20px;
+.card {
+  background: #fff;
+  margin-bottom: 25px;
+  transition: .5s;
+  border: 0;
+  border-radius: .1875rem;
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  box-shadow: none; }
+  .card .body-profile {
+    font-size: 14px;
+    color: #424242;
+    padding: 20px;
+    font-weight: 400; }
+
+.profile-page {
   border: solid 1px #fff;
-  margin: 5px 0;
-  height: 75vh; }
-
-h2 {
-  font-size: 1.5em; }
-
-#friend-requests {
-  list-style: none;
-  padding: 0; }
-
-.friend-request {
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-  border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 5px; }
-
-.avt-friend-request {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  margin-right: 20px; }
-
-.friend-info {
-  flex-grow: 1; }
-  .friend-info h3 {
-    margin: 0;
-    color: #333; }
-  .friend-info p {
-    color: #666;
-    margin-top: 5px; }
-
-.actions {
-  display: flex;
-  align-items: center; }
-  .actions button {
-    margin-right: 10px;
-    padding: 8px 15px;
-    border: none;
-    border-radius: 3px;
-    font-weight: bold;
-    cursor: pointer; }
-
-.accept-btn {
-  background-color: #4CAF50;
-  color: #fff; }
-
-.reject-btn {
-  background-color: #F44336;
-  color: #fff; }
+  padding: 20px; }
+  .profile-page .profile-header {
+    position: relative; }
+    .profile-page .profile-header .profile-image img {
+      border-radius: 50%;
+      width: 140px;
+      border: 3px solid #fff;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23); }
+    .profile-page .profile-header .social-icon a {
+      margin: 0 5px; }
+  .profile-page .profile-sub-header {
+    min-height: 60px;
+    width: 100%; }
+    .profile-page .profile-sub-header ul.box-list {
+      display: inline-table;
+      table-layout: fixed;
+      width: 100%;
+      background: #eee; }
+      .profile-page .profile-sub-header ul.box-list li {
+        border-right: 1px solid #e0e0e0;
+        display: table-cell;
+        list-style: none; }
+        .profile-page .profile-sub-header ul.box-list li:last-child {
+          border-right: none; }
+        .profile-page .profile-sub-header ul.box-list li a {
+          display: block;
+          padding: 15px 0;
+          color: #424242; }

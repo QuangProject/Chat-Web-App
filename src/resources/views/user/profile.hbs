@@ -5,13 +5,17 @@
                 <div class="col-xl-4">
                     <div class="card">
                         <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
-                            <img src="img/default-avatar.png" alt="Profile" class="rounded-circle">
-                            <h2>Quang Nguyen Duy</h2>
+                            {{#if user.avatar}}
+                            <img src="/img/{{user.avatar}}" alt="Profile" class="rounded-circle">
+                            {{else}}
+                            <img src="/img/default-avatar.png" alt="Profile" class="rounded-circle">
+                            {{/if}}
+                            <h2>{{user.first_name}} {{user.last_name}}</h2>
                             <div class="social-links mt-2">
-                                <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
-                                <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-                                <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-                                <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+                                <a href="#" class="twitter"><i class="fa-brands fa-twitter"></i></a>
+                                <a href="#" class="facebook"><i class="fa-brands fa-facebook"></i></a>
+                                <a href="#" class="instagram"><i class="fa-brands fa-instagram"></i></a>
+                                <a href="#" class="linkedin"><i class="fa-brands fa-linkedin"></i></a>
                             </div>
                         </div>
                     </div>
@@ -59,37 +63,43 @@
 
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label ">First Name</div>
-                                        <div class="col-lg-9 col-md-8">Quang</div>
+                                        <div class="col-lg-9 col-md-8">{{user.first_name}}</div>
                                     </div>
 
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label ">Last Name</div>
-                                        <div class="col-lg-9 col-md-8">Nguyen Duy</div>
+                                        <div class="col-lg-9 col-md-8">{{user.last_name}}</div>
                                     </div>
 
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label">Female</div>
+                                        {{#if user.gender}}
                                         <div class="col-lg-9 col-md-8">Male</div>
+                                        {{else}}
+                                        <div class="col-lg-9 col-md-8">Female</div>
+                                        {{/if}}
+
                                     </div>
 
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label">Birthday</div>
-                                        <div class="col-lg-9 col-md-8">August 05 2002</div>
+                                        <div class="col-lg-9 col-md-8">{{dateFormat user.birthdate "MMMM Do, yyyy"}}
+                                        </div>
                                     </div>
 
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label">Address</div>
-                                        <div class="col-lg-9 col-md-8">Long Ho, Vinh Long</div>
+                                        <div class="col-lg-9 col-md-8">{{user.address}}</div>
                                     </div>
 
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label">Phone</div>
-                                        <div class="col-lg-9 col-md-8">0916843367</div>
+                                        <div class="col-lg-9 col-md-8">{{user.telephone}}</div>
                                     </div>
 
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label">Email</div>
-                                        <div class="col-lg-9 col-md-8">quangndgcc200030@fpt.edu.vn</div>
+                                        <div class="col-lg-9 col-md-8">{{user.email}}</div>
                                     </div>
 
                                 </div>
@@ -97,38 +107,44 @@
                                 <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
                                     <!-- Profile Edit Form -->
-                                    <form id="profile-form" method="post" enctype="multipart/form-data">
+                                    <form id="profile-form" method="post" action="/user/edit/save" enctype="multipart/form-data">
+                                        <p id="profile-error" class="text-danger text-center"></p>
                                         <div class="row mb-3">
                                             <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">
                                                 Profile
                                                 Image
                                             </label>
+
                                             <div class="col-md-8 col-lg-9">
-                                                <img src="img/default-avatar.png" alt="Profile">
+                                                {{#if user.avatar}}
+                                                <img src="/img/{{user.avatar}}" id="changeImage" alt="Profile">
+                                                {{else}}
+                                                <img src="/img/default-avatar.png" id="changeImage" alt="Profile">
+                                                {{/if}}
                                                 <div class="pt-2">
-                                                    <input class="btn btn-primary btn-sm" type="file"
-                                                        id="Input_ImageFile" name="Input.ImageFile" />
+                                                    <input class="btn btn-primary btn-sm" type="file" id="changePic"
+                                                        name="img-profile" />
                                                     <a class="btn btn-danger btn-sm" title="Remove my profile image"><i
-                                                            class="bi bi-trash"></i></a>
+                                                            class="fa-solid fa-trash-can"></i></a>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="row mb-3">
-                                            <label class="col-md-4 col-lg-3 col-form-label" for="Input_FirstName">First
+                                            <label class="col-md-4 col-lg-3 col-form-label" for="first-name">First
                                                 Name</label>
                                             <div class="col-md-8 col-lg-9">
-                                                <input class="form-control" type="text" name="firstName"
-                                                    value="Quang" />
+                                                <input class="form-control" type="text" id="first-name"
+                                                    name="first_name" value="{{user.first_name}}" />
                                             </div>
                                         </div>
 
                                         <div class="row mb-3">
-                                            <label class="col-md-4 col-lg-3 col-form-label" for="Input_LastName">Last
+                                            <label class="col-md-4 col-lg-3 col-form-label" for="last-name">Last
                                                 Name</label>
                                             <div class="col-md-8 col-lg-9">
-                                                <input class="form-control" type="text" name="lastName"
-                                                    value="Nguyen Duy" />
+                                                <input class="form-control" type="text" id="last-name" name="last_name"
+                                                    value="{{user.last_name}}" />
                                             </div>
                                         </div>
 
@@ -136,72 +152,64 @@
                                             <label class="col-md-4 col-lg-3 col-form-label">Gender</label>
                                             <div class="col-md-8 col-lg-9">
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="gender" />
+                                                    {{#if user.gender}}
+                                                    <input class="form-check-input" type="radio" id="maleGender" checked
+                                                        name="gender" value="true" />
+                                                    {{else}}
+                                                    <input class="form-check-input" type="radio" id="maleGender"
+                                                        name="gender" value="true" />
+                                                    {{/if}}
                                                     <label class="form-check-label" for="maleGender">
                                                         Male
                                                     </label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="gender" />
+                                                    {{#unless user.gender}}
+                                                    <input class="form-check-input" id="femaleGender" type="radio"
+                                                        checked name="gender" value="false" />
+                                                    {{else}}
+                                                    <input class="form-check-input" id="femaleGender" type="radio"
+                                                        name="gender" value="false" />
+                                                    {{/unless}}
                                                     <label class="form-check-label" for="femaleGender">
                                                         Female
                                                     </label>
                                                 </div>
-                                                <span class="text-danger field-validation-valid"
-                                                    data-valmsg-for="Input.Gender" data-valmsg-replace="true"></span>
                                             </div>
                                         </fieldset>
 
                                         <div class="row mb-3">
                                             <label class="col-md-4 col-lg-3 col-form-label"
-                                                for="Input_Birthday">Birthday</label>
+                                                for="birthday">Birthday</label>
                                             <div class="col-md-8 col-lg-9">
-                                                <input type="date" class="form-control" data-val="true"
-                                                    data-val-required="Please choose your birthday!" id="Input_Birthday"
-                                                    name="Input.Birthday" value="2003-03-09">
-                                                <span class="text-danger field-validation-valid"
-                                                    data-valmsg-for="Input.Birthday" data-valmsg-replace="true"></span>
+                                                <input type="date" class="form-control" id="birthday" name="birthday"
+                                                    value="{{dateFormat user.birthdate 'YYYY-MM-DD'}}">
                                             </div>
                                         </div>
 
                                         <div class="row mb-3">
                                             <label class="col-md-4 col-lg-3 col-form-label"
-                                                for="Input_Address">Address</label>
+                                                for="address">Address</label>
                                             <div class="col-md-8 col-lg-9">
-                                                <input class="form-control" type="text" data-val="true"
-                                                    data-val-maxlength="Address must be lesser than 100 character!"
-                                                    data-val-maxlength-max="100"
-                                                    data-val-minlength="Address must be more than 10 character!"
-                                                    data-val-minlength-min="10"
-                                                    data-val-required="Address can not empty!" id="Input_Address"
-                                                    maxlength="100" name="Input.Address" value="Tan Hanh, Vinh Long" />
-                                                <span class="text-danger field-validation-valid"
-                                                    data-valmsg-for="Input.Address" data-valmsg-replace="true"></span>
+                                                <input class="form-control" type="text" id="address" name="address"
+                                                    value="{{user.address}}" />
                                             </div>
                                         </div>
 
                                         <div class="row mb-3">
-                                            <label class="col-md-4 col-lg-3 col-form-label"
-                                                for="Input_PhoneNumber">Phone number</label>
+                                            <label class="col-md-4 col-lg-3 col-form-label" for="telephone">Phone
+                                                number</label>
                                             <div class="col-md-8 col-lg-9">
-                                                <input class="form-control" type="tel" data-val="true"
-                                                    data-val-phone="The Phone number field is not a valid phone number."
-                                                    id="Input_PhoneNumber" name="Input.PhoneNumber"
-                                                    value="0843630939" />
-                                                <span class="text-danger field-validation-valid"
-                                                    data-valmsg-for="Input.PhoneNumber"
-                                                    data-valmsg-replace="true"></span>
+                                                <input class="form-control" type="tel" id="telephone" name="telephone"
+                                                    value="{{user.telephone}}" />
                                             </div>
                                         </div>
 
                                         <div class="row mb-3">
-                                            <label class="col-md-4 col-lg-3 col-form-label"
-                                                for="Input_Email">Email</label>
+                                            <label class="col-md-4 col-lg-3 col-form-label" for="email">Email</label>
                                             <div class="col-md-8 col-lg-9">
-                                                <input class="form-control" readonly type="email" data-val="true"
-                                                    data-val-email="The Email field is not a valid e-mail address."
-                                                    data-val-required="The Email field is required." id="Input_Email"
-                                                    name="Input.Email" value="trannqgcc210042@fpt.edu.vn" />
+                                                <input class="form-control" readonly type="email" id="email"
+                                                    name="email" value="{{user.email}}" />
                                             </div>
                                         </div>
 
@@ -209,8 +217,6 @@
                                             <button id="update-profile-button" type="submit"
                                                 class="btn btn-primary">Save Changes</button>
                                         </div>
-                                        <input name="__RequestVerificationToken" type="hidden"
-                                            value="CfDJ8Pblz1yTy8JFi37vb1hMMaMPYmpTEAzbNqAm4FfdpptaQL7zEehYDP_UBbxcvXszQwr1iJ7SR4yihc3_wahKqVBUOVwPpa82mz8Yy79HcKcr-pG_EBvStnUT6jeqQXg8QB2uBvhdTovCd6u9WZ44n9bzIxY42gCCEzwDM9u8mfrBS5dv88lOF21CV29PQZId0w" />
                                     </form>
                                     <!-- End Profile Edit Form -->
 
@@ -265,7 +271,6 @@
                 </div>
             </div>
         </section>
-
     </section>
     <!-- End #main -->
 </main>

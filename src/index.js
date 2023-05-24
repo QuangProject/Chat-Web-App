@@ -5,14 +5,81 @@ const morgan = require('morgan')
 const exphbs = require('express-handlebars')
 const hbs = require('handlebars')
 const session = require('express-session');
+const bodyParser = require('body-parser');
 require('dotenv').config()
 const db = require('./config/db')
 const route = require('./routes')
+
+// Middleware for parsing JSON data
+app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+hbs.registerHelper('dateFormat', require('handlebars-dateformat'));
+
+hbs.registerHelper('ifCond', function (v1, operator, v2, options) {
+    switch (operator) {
+        case '==':
+            return (v1 == v2) ? options.fn(this) : options.inverse(this);
+        case '===':
+            return (v1 === v2) ? options.fn(this) : options.inverse(this);
+        case '!=':
+            return (v1 != v2) ? options.fn(this) : options.inverse(this);
+        case '!==':
+            return (v1 !== v2) ? options.fn(this) : options.inverse(this);
+        case '<':
+            return (v1 < v2) ? options.fn(this) : options.inverse(this);
+        case '<=':
+            return (v1 <= v2) ? options.fn(this) : options.inverse(this);
+        case '>':
+            return (v1 > v2) ? options.fn(this) : options.inverse(this);
+        case '>=':
+            return (v1 >= v2) ? options.fn(this) : options.inverse(this);
+        case '&&':
+            return (v1 && v2) ? options.fn(this) : options.inverse(this);
+        case '||':
+            return (v1 || v2) ? options.fn(this) : options.inverse(this);
+        default:
+            return options.inverse(this);
+    }
+});
+
+hbs.registerHelper('times', function (from, to, block) {
+    var accum = '';
+    for (var i = from; i <= to; i++) {
+        block.data.index = i;
+        accum += block.fn(i);
+    }
+
+    return accum;
+});
+
+hbs.registerHelper('join', function (items, block) {
+    var delimiter = block.hash.delimiter || ",",
+        start = start = block.hash.start || 0,
+        len = items ? items.length : 0,
+        end = block.hash.end || len,
+        out = "";
+
+    if (end > len) end = len;
+
+    if ('function' === typeof block) {
+        for (i = start; i < end; i++) {
+            if (i > start)
+                out += delimiter;
+            if ('string' === typeof items[i])
+                out += items[i];
+            else
+                out += block(items[i]);
+        }
+        return out;
+    } else {
+        return [].concat(items).slice(start, end).join(delimiter);
+    }
+});
 
 //use session
 app.use(session({

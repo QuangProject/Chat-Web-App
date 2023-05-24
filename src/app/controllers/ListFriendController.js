@@ -1,6 +1,9 @@
 class ListFriendController {
-    async index(req, res) {
-        res.render('list-friend/index')
+    index(req, res) {
+        res.render('list-friend/index', {
+            title: "List Friends",
+            style: "list-friend.css"
+        })
     }
 }
 

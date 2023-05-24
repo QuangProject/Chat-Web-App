@@ -1,10 +1,9 @@
 class SiteController {
     index(req, res) {
-        res.render('home')
-    }
-
-    profile(req, res) {
-        res.render('site/profile')
+        res.render('home', {
+            title: "Chat App",
+            style: "home.css"
+        })
     }
 
     logout(req, res) {

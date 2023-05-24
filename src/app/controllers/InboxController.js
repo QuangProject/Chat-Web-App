@@ -1,6 +1,9 @@
 class InboxController {
-    async index(req, res) {
-        res.render('inbox/index')
+    index(req, res) {
+        res.render('inbox/index', {
+            title: "Inboxes",
+            style: "inbox.css"
+        })
     }
 }
 

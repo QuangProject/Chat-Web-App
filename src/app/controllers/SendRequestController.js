@@ -1,6 +1,9 @@
 class SendRequestController {
-    async index(req, res) {
-        res.render('send-request/index')
+    index(req, res) {
+        res.render('send-request/index', {
+            title: "Send Request",
+            style: "send-request.css"
+        })
     }
 }
 

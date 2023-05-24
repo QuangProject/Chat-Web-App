@@ -1,60 +1,51 @@
-<div class="container-login">
-    <div class="card-login">
-        <h2 class="mb-5">Login</h2>
-        <form id="login-form">
-            <div class="input-container">
-                <input type="text" id="login-username" class="input-login">
-                <label for="login-username" class="label-login">Username</label>
+<section class="d-lg-flex half">
+    <div class="bg order-1 order-md-2" style="background-image: url('/img/chat-app-2.png')"></div>
+    <div class="contents order-2 order-md-1">
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-md-7">
+                    <h3 class="mb-5 text-center">Login to <strong>Chat App</strong></h3>
+                    <form id="login-form" method="post">
+
+                        <p id="login-error" class="text-danger text-center"></p>
+
+                        <div class="form-group first">
+                            <label for="login-username" class="form-label fw-bold">Username</label>
+                            <input type="text" id="login-username" class="form-control" autocomplete="off" />
+                        </div>
+                        <div class="form-group last my-3">
+                            <label for="login-password" class="form-label fw-bold">Password</label>
+                            <input type="password" id="login-password" class="form-control" autocomplete="off" />
+                        </div>
+
+                        <div class="d-flex mb-5 align-items-center">
+                            <label asp-for="Input.RememberMe" class="control control--checkbox mb-0">
+                                <span class="caption">Remember me</span>
+                                <input type="checkbox" asp-for="Input.RememberMe" />
+                                <div class="control__indicator"></div>
+                            </label>
+                            <span class="ms-auto"><a id="forgot-password" href="#"
+                                    class="forgot-pass text-decoration-none">Forgot Password</a></span>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <input type="submit" value="Sign in" class="btn btn-primary">
+                        </div>
+                    </form>
+                    <div class="or-container">
+                        <div class="line-separator"></div>
+                        <div class="or-label">OR</div>
+                        <div class="line-separator"></div>
+                    </div>
+                    <form id="external-account gSignInWrapper" asp-page="./ExternalLogin"
+                        asp-route-returnUrl="@Model.ReturnUrl" method="post" class="text-center">
+                        <button type="submit" id="customBtn" class="customGPlusSignIn" name="provider" value="Google">
+                            <span class="icon"></span>
+                            <span class="buttonText">Sign in with Google</span>
+                        </button>
+                    </form>
+                </div>
             </div>
-            <div class="input-container">
-                <input type="password" id="login-password" class="input-login">
-                <label for="login-password" class="label-login">Password</label>
-            </div>
-            <button type="submit" class="button-login">Login</button>
-            <p id="login-error" class="error-message"></p>
-        </form>
-        <p class="register-link">Don't have an account? <a href="/register">Register here</a></p>
+        </div>
     </div>
-</div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"
-    integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script>
-    // Login form submit event handler
-    $("#login-form").submit(function (e) {
-        e.preventDefault();
-
-        const usernameInput = document.getElementById("login-username");
-        const passwordInput = document.getElementById("login-password");
-        const loginError = document.getElementById("login-error");
-
-        const username = usernameInput.value;
-        const password = passwordInput.value;
-
-        // Validate input fields
-        if (!username || !password) {
-            loginError.textContent = "Please fill in all fields.";
-            return;
-        }
-
-        const data = { username, password }
-
-        $.ajax({
-            url: "/login/auth",
-            type: "post",
-            data: data,
-
-            success: function (result, status, xhr) {
-                if (result.status == 'fail') {
-                    loginError.textContent = result.msg;
-                } else {
-                    window.location.href = '/'
-                }
-            },
-            error: function (xhr, status, error) {
-                console.log(xhr);
-            }
-        });
-    });
-
-</script>
+</section>
