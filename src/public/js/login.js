@@ -23,18 +23,30 @@ $("#login-form").submit(function (e) {
         data: data,
 
         success: function (result) {
-            if (result.status == 'fail') {
-                loginError.textContent = result.msg;
-            } else {
-                window.location.href = '/'
-            }
+            Swal.fire(
+                'Success',
+                result.message,
+                'success'
+            ).then((result) => {
+                window.location.href = '/';
+            })
         },
         error: function (error) {
-            Swal.fire(
-                'Error',
-                error.responseJSON.error,
-                'error'
-            )
+            console.error(error)
+            if (error.status === 400) {
+                Swal.fire(
+                    'Warning',
+                    error.responseJSON.error,
+                    'warning'
+                )
+            }
+            if (error.status === 500) {
+                Swal.fire(
+                    'Error',
+                    error.responseJSON.error,
+                    'error'
+                )
+            }
         }
     });
 });

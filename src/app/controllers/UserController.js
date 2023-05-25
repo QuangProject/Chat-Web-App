@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt')
 const formidable = require('formidable');
 const mv = require('mv');
 const { User } = require('../models/User')
@@ -66,6 +67,34 @@ class UserController {
                     return res.status(500).json({ error: 'Error updating the profile.' });
                 });
         });
+    }
+
+    async changePassword(req, res) {
+        // Get User
+        const username = req.session.user.username
+        var user = await User.getOne(username)
+        if (user.rowCount == 0) {
+            return res.status(400).json({ error: "User not found" })
+        } else {
+            // Get infomation from form
+            const { oldPassword, newPassword } = req.body
+            const validPass = await bcrypt.compare(
+                oldPassword,
+                user.rows[0].password
+            )
+            if (!validPass) {
+                return res.status(400).json({ error: "Old password is incorrect" })
+            }
+            const salt = await bcrypt.genSalt(10)
+            const hashed = await bcrypt.hash(newPassword, salt)
+            User.changePassword(username, hashed)
+                .then(data => {
+                    return res.status(200).json({ message: 'Password changed successfully.' });
+                })
+                .catch(err => {
+                    return res.status(500).json({ error: 'Error changing the password.' });
+                });
+        }
     }
 }
 

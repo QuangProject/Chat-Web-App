@@ -41,27 +41,20 @@ class LoginController {
                 )
                 if (validPass) {
                     req.session.user = {
+                        user_id: user.rows[0].user_id,
                         username: user.rows[0].username,
                         avatar: user.rows[0].avatar,
                         status: user.rows[0].status,
                         isAdmin: user.rows[0].is_admin
                     }
                     res.status(200).json({
-                        status: "success"
+                        message: "You have successfully logged in"
                     })
                 } else {
-                    const conflicError = "Password is not correct"
-                    res.status(200).json({
-                        status: "fail",
-                        msg: conflicError
-                    })
+                    res.status(400).json({ error: "Password is not correct" })
                 }
             } else {
-                const conflicError = "User is not exist"
-                res.status(200).json({
-                    status: "fail",
-                    msg: conflicError
-                })
+                res.status(400).json({ error: "Username is not correct" })
             }
         } catch (err) {
             return res.status(500).json({ error: 'Error logging in' });
@@ -79,6 +72,7 @@ class LoginController {
         const user = await User.getOne(username)
         if (user.rowCount == 1) {
             req.session.user = {
+                user_id: user.rows[0].user_id,
                 username: user.rows[0].username,
                 avatar: user.rows[0].avatar,
                 status: user.rows[0].status,
@@ -101,6 +95,7 @@ class LoginController {
             User.create(username, hashed, firstName, lastName, true, currentDate, email, "", "", avatar, 'active', false)
                 .then(user => {
                     req.session.user = {
+                        user_id: user.rows[0].user_id,
                         username: user.rows[0].username,
                         avatar: user.rows[0].avatar,
                         status: user.rows[0].status,

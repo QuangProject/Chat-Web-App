@@ -60,11 +60,69 @@ $("#profile-form").submit(function (e) {
     var formData = new FormData(this);
 
     $.ajax({
-        url: '/user/edit/save',
+        url: '/user/edit/profile',
         type: 'POST',
         data: formData,
         processData: false,
         contentType: false,
+        success: function (response) {
+            Swal.fire(
+                'Success',
+                response.message,
+                'success'
+            ).then((result) => {
+                window.location.href = '/user/profile';
+            })
+        },
+        error: function (error) {
+            Swal.fire(
+                'Error',
+                error.responseJSON.error,
+                'error'
+            )
+        }
+    });
+});
+
+// Change password form submit event handler
+$("#change-password-form").submit(function (e) {
+    e.preventDefault();
+
+    const currentPasswordInput = document.getElementById("currentPassword");
+    const newPasswordInput = document.getElementById("newPassword");
+    const reNewPasswordInput = document.getElementById("renewPassword");
+    const changePasswordError = document.getElementById("change-password-error");
+
+    const currentPassword = currentPasswordInput.value;
+    const newPassword = newPasswordInput.value;
+    const reNewPassword = reNewPasswordInput.value;
+
+    // Validate input fields
+    if (!currentPassword || !newPassword || !reNewPassword) {
+        changePasswordError.textContent = "Please fill in all fields.";
+        return;
+    }
+
+    // Validate new password
+    if (newPassword.length < 6) {
+        changePasswordError.textContent = "Password must be at least 6 characters.";
+        return;
+    }
+
+    // Validate re-new password
+    if (newPassword != reNewPassword) {
+        changePasswordError.textContent = "Re-entered password does not match.";
+        return;
+    }
+
+    // Send request to server
+    $.ajax({
+        url: '/user/edit/password',
+        type: 'POST',
+        data: {
+            oldPassword: currentPassword,
+            newPassword: newPassword
+        },
         success: function (response) {
             Swal.fire(
                 'Success',

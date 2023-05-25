@@ -2,7 +2,8 @@ const express = require("express")
 const router = express.Router()
 const userController = require('../app/controllers/UserController')
 
-router.post('/edit/save', userController.editProfile)
+router.post('/edit/password', userController.changePassword)
+router.post('/edit/profile', userController.editProfile)
 router.get('/profile', userController.profile)
 
 module.exports = router

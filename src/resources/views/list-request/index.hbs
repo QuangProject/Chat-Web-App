@@ -1,0 +1,44 @@
+<div class="container profile-page">
+    <h2 class="text-center mb-3 mt-2">Friend Request</h2>
+    <div class="row">
+        {{#if friendRequests }}
+        {{#each friendRequests }}
+        <div class="col-12 col-lg-6" id="cart_{{this.sender_id}}">
+            <div class="card profile-header">
+                <div class="body-profile">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-12">
+                            <div class="profile-image float-md-right">
+                                {{#if this.sender.avatar }}
+                                <img src="{{this.sender.avatar}}" alt="">
+                                {{else }}
+                                <img src="/img/default-avatar.png" alt="">
+                                {{/if}}
+                            </div>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-12">
+                            <h4 class="m-t-0 m-b-0"><strong>{{this.sender.first_name}}</strong>
+                                {{this.sender.last_name}}</h4>
+                            <span class="job_post">{{this.message}}</span>
+                            <p>{{this.sender.address}}</p>
+                            <div>
+                                <button class="btn btn-success btn-round"
+                                    onclick="accept({{this.sender_id}})">Accept</button>
+                                <button class="btn btn-danger btn-round btn-simple"
+                                    onclick="reject({{this.sender_id}})">Reject</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{/each }}
+        {{else }}
+        <div class="col-12">
+            <div class="alert alert-info" role="alert">
+                <strong>Info!</strong> You don't have any friend request.
+            </div>
+        </div>
+        {{/if}}
+    </div>
+</div>

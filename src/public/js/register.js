@@ -33,6 +33,18 @@ $("#register-form").submit(function (e) {
         return;
     }
 
+    // Validate password
+    if (password.length < 6) {
+        registerError.textContent = "Password must be at least 6 characters.";
+        return;
+    }
+
+    // Check if password and confirm do not match
+    if (password != confirmPassword) {
+        registerError.textContent = "Password and confirm do not match.";
+        return;
+    }
+
     // Validate gender
     var gender
     var isChecked = false;
@@ -46,12 +58,6 @@ $("#register-form").submit(function (e) {
     }
     if (!isChecked) {
         registerError.textContent = "Please choose your gender.";
-        return;
-    }
-
-    // Check if password and confirm do not match
-    if (password != confirmPassword) {
-        registerError.textContent = "Password and confirm do not match.";
         return;
     }
 
@@ -88,24 +94,30 @@ $("#register-form").submit(function (e) {
         data: data,
 
         success: function (result) {
-            if (result.status == 'fail') {
-                registerError.textContent = result.msg;
-            } else {
-                Swal.fire(
-                    'Success',
-                    result.msg,
-                    'success'
-                ).then(() => {
-                    window.location.href = '/login';
-                })
-            }
+            Swal.fire(
+                'Success',
+                result.msg,
+                'success'
+            ).then(() => {
+                window.location.href = '/login';
+            })
         },
         error: function (error) {
-            Swal.fire(
-                'Error',
-                error.responseJSON.error,
-                'error'
-            )
+            console.error(error)
+            if (error.status === 400) {
+                Swal.fire(
+                    'Warning',
+                    error.responseJSON.error,
+                    'warning'
+                )
+            }
+            if (error.status === 500) {
+                Swal.fire(
+                    'Error',
+                    error.responseJSON.error,
+                    'error'
+                )
+            }
         }
     });
 });

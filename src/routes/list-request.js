@@ -1,8 +1,12 @@
 const express = require("express")
 const router = express.Router()
 const friendRequestController = require('../app/controllers/FriendRequestController')
-// const authMiddleware = require('../app/middlewares/AuthMiddleware')
 
+// accept friend request
+router.post('/accept', friendRequestController.acceptRequest)
+// reject friend request
+router.post('/reject', friendRequestController.rejectRequest)
+// get all friend request
 router.get('/', friendRequestController.index)
 
 module.exports = router

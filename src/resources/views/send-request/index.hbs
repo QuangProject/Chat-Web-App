@@ -1,11 +1,16 @@
 <div class="container-send-request">
     <div class="send-request">
         <h1 class="text-center mb-4">Send Friend Request</h1>
-        <form action="process_request.php" method="post">
-            <label for="name" class="label-send-request">Friend's Name:</label>
-            <input type="text" id="name" name="name" class="input-send-request" required>
-            <label for="message" class="label-send-request">Message:</label>
-            <textarea id="message" name="message" class="input-send-request" required></textarea>
+        <p id="send-request-error" class="text-danger text-center"></p>
+        <form id="send-request-form" method="post">
+            <div>
+                <label for="username" class="label-send-request">Friend's Name:</label>
+                <input type="text" id="username" name="username" class="input-send-request">
+            </div>
+            <div>
+                <label for="message" class="label-send-request">Message:</label>
+                <textarea id="message" name="message" class="input-send-request"></textarea>
+            </div>
             <button type="submit" class="btn-send-request">Send Request</button>
         </form>
     </div>
