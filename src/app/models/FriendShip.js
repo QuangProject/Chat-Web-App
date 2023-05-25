@@ -10,4 +10,14 @@ FriendShip.create = (userId, friendId) => {
     );
 };
 
+// GET ALL FRIENDS
+FriendShip.getAll = (userId) => {
+    return db.query(`SELECT * FROM friendships WHERE user_id = $1`, [userId]);
+};
+
+// CHECK IF USER AND FRIEND ALREADY FRIEND
+FriendShip.getOne = (userId, friendId) => {
+    return db.query(`SELECT * FROM friendships WHERE user_id = $1 AND friend_id = $2`, [userId, friendId]);
+};
+
 module.exports = { FriendShip };

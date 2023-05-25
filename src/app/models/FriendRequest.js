@@ -25,11 +25,6 @@ FriendRequest.getOne = (senderId, receiverId) => {
     return db.query(`SELECT * FROM friend_requests WHERE sender_id = $1 AND receiver_id = $2`, [senderId, receiverId]);
 };
 
-// CHECK IF USER AND FRIEND ALREADY FRIEND
-FriendRequest.getOneFriend = (senderId, receiverId) => {
-    return db.query(`SELECT * FROM friend_requests WHERE sender_id = $1 AND receiver_id = $2 AND status = 'friend'`, [senderId, receiverId]);
-};
-
 // UPDATE FRIEND REQUEST
 FriendRequest.update = (senderId, receiverId, status) => {
     return db.query(`UPDATE friend_requests SET status = $3 WHERE sender_id = $1 AND receiver_id = $2 RETURNING *`, [senderId, receiverId, status]);

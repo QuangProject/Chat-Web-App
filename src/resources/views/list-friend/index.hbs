@@ -3,84 +3,41 @@
         <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
     </form>
     <div class="row">
+        {{#if friends }}
+        {{#each friends }}
         <div class="col-12 col-lg-6">
             <div class="card profile-header">
                 <div class="body-profile">
                     <div class="row">
                         <div class="col-lg-4 col-md-4 col-12">
-                            <div class="profile-image float-md-right"> <img src="/img/default-avatar.png" alt=""> </div>
+                            <div class="profile-image float-md-right">
+                                {{#if this.friendInfo.avatar }}
+                                <img src="{{this.friendInfo.avatar}}" alt="">
+                                {{else }}
+                                <img src="/img/default-avatar.png" alt="">
+                                {{/if}}
+                            </div>
                         </div>
                         <div class="col-lg-8 col-md-8 col-12">
-                            <h4 class="m-t-0 m-b-0"><strong>Michael</strong> Deo</h4>
-                            <span class="job_post">Ui UX Designer</span>
-                            <p>795 Folsom Ave, Suite 600 San Francisco, CADGE 94107</p>
+                            <h4 class="m-t-0 m-b-0"><strong>{{this.friendInfo.first_name}}</strong> {{this.friendInfo.last_name}}</h4>
+                            <span class="job_post">{{this.friendInfo.username}}</span>
+                            <p>{{this.friendInfo.address}}</p>
                             <div>
                                 <button class="btn btn-primary btn-round btn-simple">Message</button>
+                                <button class="btn btn-danger btn-round btn-simple">Unfriend</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="col-12 col-lg-6">
-            <div class="card profile-header">
-                <div class="body-profile">
-                    <div class="row">
-                        <div class="col-lg-4 col-md-4 col-12">
-                            <div class="profile-image float-md-right"> <img src="/img/default-avatar.png" alt=""> </div>
-                        </div>
-                        <div class="col-lg-8 col-md-8 col-12">
-                            <h4 class="m-t-0 m-b-0"><strong>Michael</strong> Deo</h4>
-                            <span class="job_post">Ui UX Designer</span>
-                            <p>795 Folsom Ave, Suite 600 San Francisco, CADGE 94107</p>
-                            <div>
-                                <button class="btn btn-primary btn-round btn-simple">Message</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        {{/each }}
+        {{else }}
+        <div class="col-12">
+            <div class="alert alert-info" role="alert">
+                <strong>Info!</strong> You don't have any friend.
             </div>
         </div>
-
-        <div class="col-12 col-lg-6">
-            <div class="card profile-header">
-                <div class="body-profile">
-                    <div class="row">
-                        <div class="col-lg-4 col-md-4 col-12">
-                            <div class="profile-image float-md-right"> <img src="/img/default-avatar.png" alt=""> </div>
-                        </div>
-                        <div class="col-lg-8 col-md-8 col-12">
-                            <h4 class="m-t-0 m-b-0"><strong>Michael</strong> Deo</h4>
-                            <span class="job_post">Ui UX Designer</span>
-                            <p>795 Folsom Ave, Suite 600 San Francisco, CADGE 94107</p>
-                            <div>
-                                <button class="btn btn-primary btn-round btn-simple">Message</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-12 col-lg-6">
-            <div class="card profile-header">
-                <div class="body-profile">
-                    <div class="row">
-                        <div class="col-lg-4 col-md-4 col-12">
-                            <div class="profile-image float-md-right"> <img src="/img/default-avatar.png" alt=""> </div>
-                        </div>
-                        <div class="col-lg-8 col-md-8 col-12">
-                            <h4 class="m-t-0 m-b-0"><strong>Michael</strong> Deo</h4>
-                            <span class="job_post">Ui UX Designer</span>
-                            <p>795 Folsom Ave, Suite 600 San Francisco, CADGE 94107</p>
-                            <div>
-                                <button class="btn btn-primary btn-round btn-simple">Message</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        {{/if}}
     </div>
 </div>

@@ -89,14 +89,14 @@ class FriendRequestController {
         if (updateObj.rowCount == 0) {
             return res.status(400).json({ error: "Reject friend request failed" })
         }
-        return res.status(200).json({ message: "Reject friend request successfully" })
+        // return res.status(200).json({ message: "Reject friend request successfully" })
         // delete friend request
-        // const deleteObj = await FriendRequest.delete(friendRequestId)
-        // if (deleteObj.rowCount > 0) {
-        //     return res.status(200).json({ message: "Reject friend request successfully" })
-        // } else {
-        //     return res.status(400).json({ error: "Reject friend request failed" })
-        // }
+        const deleteObj = await FriendRequest.delete(friendRequestId)
+        if (deleteObj.rowCount > 0) {
+            return res.status(200).json({ message: "Reject friend request successfully" })
+        } else {
+            return res.status(400).json({ error: "Reject friend request failed" })
+        }
     }
 }
 
