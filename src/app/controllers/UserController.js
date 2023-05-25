@@ -1,6 +1,8 @@
 const bcrypt = require('bcrypt')
 const formidable = require('formidable');
 const mv = require('mv');
+const sharp = require('sharp');
+const fs = require('fs');
 const { User } = require('../models/User')
 
 class UserController {
@@ -26,7 +28,7 @@ class UserController {
             const username = req.session.user.username
             User.getOne(username)
                 .then(data => {
-                    // Get infomation from form
+                    // Get infomation from form6
                     const { firstName, lastName, gender, birthday, telephone, address } = fields;
                     var user = data.rows[0]
                     // Check if the user uploaded a new avatar
@@ -45,22 +47,57 @@ class UserController {
                         const fileName = file.originalFilename;
 
                         // Move the file to the desired location
-                        const newFilePath = `src/public/avatars/${Date.now()}${fileName}`;
-                        mv(filePath, newFilePath, (err) => {
-                            if (err) {
-                                console.error(err);
-                                return res.status(500).json({ error: 'Error moving the file.' });
-                            }
+                        const croppedImagePath = `src/public/avatars/${Date.now()}${fileName}`;
 
-                            const avt = newFilePath.slice(10);
-                            User.editProfile(username, firstName, lastName, gender, birthday, telephone, address, avt)
-                                .then(data => {
-                                    return res.status(200).json({ message: 'Profile updated successfully.' });
-                                })
-                                .catch(err => {
-                                    return res.status(500).json({ error: 'Error updating the profile.' });
-                                });
-                        });
+                        sharp(filePath)
+                            .metadata()
+                            .then((metadata) => {
+                                const originalWidth = metadata.width;
+                                const originalHeight = metadata.height;
+                                // Calculate the dimensions for the middle portion
+                                const size = Math.min(originalWidth, originalHeight);
+                                const x = Math.floor((originalWidth - size) / 2);
+                                const y = Math.floor((originalHeight - size) / 2);
+                                // Perform the crop operation
+                                sharp(filePath)
+                                    .extract({ width: size, height: size, left: x, top: y })
+                                    .toFile(croppedImagePath, (err, info) => {
+                                        if (err) {
+                                            console.error(err);
+                                            return res.status(500).json({ error: 'Error cropping the image.' });
+                                        }
+
+                                        // Unlink the old avatar
+                                        const oldAvatar = `src/public${user.avatar}`;
+                                        fs.unlink(oldAvatar, (err) => {
+                                            if (err) {
+                                                console.error(err);
+                                                return res.status(500).json({ error: 'Error deleting the old avatar.' });
+                                            }
+                                        });
+
+                                        mv(croppedImagePath, croppedImagePath, { mkdirp: true }, (err) => {
+                                            if (err) {
+                                                console.error(err);
+                                                return res.status(500).json({ error: 'Error moving the file.' });
+                                            }
+
+                                            const avt = croppedImagePath.slice(10);
+                                            req.session.user.avatar = avt;
+                                            User.editProfile(username, firstName, lastName, gender, birthday, telephone, address, avt)
+                                                .then(data => {
+                                                    return res.status(200).json({ message: 'Profile updated successfully.' });
+                                                })
+                                                .catch(err => {
+                                                    return res.status(500).json({ error: 'Error updating the profile.' });
+                                                });
+                                        });
+                                    });
+                            })
+                            .catch(err => {
+                                console.error(err);
+                                return res.status(500).json({ error: 'Error getting the image metadata.' });
+                            });
                     }
                 })
                 .catch(err => {

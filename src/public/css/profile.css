@@ -101,7 +101,8 @@
     border-bottom: 2px solid #4154f1; }
 
 .profile .profile-card img {
-  max-width: 120px; }
+  height: 120px;
+  width: 120px; }
 
 .profile .profile-card h2 {
   font-size: 24px;
