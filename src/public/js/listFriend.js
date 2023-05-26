@@ -61,5 +61,33 @@ function unfriend(friendId) {
 
 // Message
 function message(friendId) {
-    alert(friendId)
+    // send request to server
+    $.ajax({
+        url: '/conversation/create',
+        type: 'POST',
+        data: {
+            friendId
+        },
+        success: function (response) {
+            window.location.href = '/message/' + response.conversationId
+        },
+        error: function (error) {
+            console.error(error)
+            if (error.status === 400) {
+                Swal.fire(
+                    'Warning',
+                    error.responseJSON.error,
+                    'warning'
+                )
+            }
+            if (error.status === 500) {
+                Swal.fire(
+                    'Error',
+                    error.responseJSON.error,
+                    'error'
+                )
+            }
+        }
+    })
+
 }

@@ -4,14 +4,13 @@ const db = require("../../config/db");
 const Conversation = {};
 
 // CREATE CONVERSATION
-Conversation.create = (name) => {
-    return db.query(`INSERT INTO conversations (name, created_at, updated_at) VALUES($1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP) RETURNING *`,
-        [name]);
+Conversation.create = () => {
+    return db.query(`INSERT INTO conversations (created_at) VALUES(CURRENT_TIMESTAMP) RETURNING *`);
 };
 
-// CHECK IF CONVERSATION EXISTS
-Conversation.isExist = (freightId, userId) => {
-    return db.query(`SELECT * FROM conversations WHERE freight_id = $1 AND user_id = $2`, [freightId, userId]);
+// HOW TO CHECK IF CONVERSATION EXIST?
+Conversation.isExist = (friendId, userId) => {
+    return db.query(`SELECT * FROM conversations as c INNER JOIN participants as p ON c.conversation_id = p.conversation_id WHERE p.user_id = $1 OR p.user_id = $2`, [friendId, userId]);
 };
 
 module.exports = { Conversation };

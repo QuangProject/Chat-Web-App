@@ -3,6 +3,8 @@ const router = express.Router()
 const messageController = require('../app/controllers/MessageController')
 // const authMiddleware = require('../app/middlewares/AuthMiddleware')
 
-router.get('/', messageController.index)
+// create a new message
+router.post('/create', messageController.create)
+router.get('/:conversationId', messageController.conversation)
 
 module.exports = router

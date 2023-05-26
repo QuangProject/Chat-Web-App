@@ -5,18 +5,33 @@
         </a>
     </div>
     <div id="message-list">
-        <div class="message">
-            <img src="img/default-avatar.png" alt="Avatar" class="avatar-message">
-            <div class="message-content">Hello!</div>
-        </div>
+        {{#if messages}}
+        {{#each messages}}
+        {{#if isSender}}
         <div class="message sender">
-            <div class="message-content">Hi there!</div>
-            <img src="img/default-avatar.png" alt="Avatar" class="avatar-message">
+            <div class="message-content">{{this.content}}</div>
+            {{#if this.avatar}}
+            <img src="{{this.avatar}}" alt="Avatar" class="avatar-message">
+            {{else}}
+            <img src="/img/default-avatar.png" alt="Avatar" class="avatar-message">
+            {{/if}}
         </div>
+        {{else}}
         <div class="message">
-            <img src="img/default-avatar.png" alt="Avatar" class="avatar-message">
-            <div class="message-content">How are you?</div>
+            {{#if this.avatar}}
+            <img src="{{this.avatar}}" alt="Avatar" class="avatar-message">
+            {{else}}
+            <img src="/img/default-avatar.png" alt="Avatar" class="avatar-message">
+            {{/if}}
+            <div class="message-content">{{this.content}}</div>
         </div>
+        {{/if}}
+        {{/each }}
+        {{else}}
+        <div class="alert alert-info" role="alert">
+            <strong>Info!</strong> You don't have any message.
+        </div>
+        {{/if}}
     </div>
     <div id="message-input">
         <input type="text" id="input-text" placeholder="Type your message">

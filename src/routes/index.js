@@ -14,7 +14,7 @@ const authMiddleware = require('../app/middlewares/AuthMiddleware')
 function route(app) {
     app.use('/register', registerRouter)
     app.use('/login', loginRouter)
-    app.use('/conversation', conversationRouter)
+    app.use('/conversation', authMiddleware.isAuth, conversationRouter)
     app.use('/user', authMiddleware.isAuth, userRouter)
     app.use('/send-request', authMiddleware.isAuth, sendRequestRouter)
     app.use('/list-friend', authMiddleware.isAuth, listFriendRouter)
