@@ -2,7 +2,8 @@ class MessageController {
     index(req, res) {
         res.render('message/index', {
             title: "Messages",
-            style: "message.css"
+            style: "message.css",
+            script: "message.js"
         })
     }
 }

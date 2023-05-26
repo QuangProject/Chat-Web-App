@@ -5,7 +5,7 @@
     <div class="row">
         {{#if friends }}
         {{#each friends }}
-        <div class="col-12 col-lg-6">
+        <div class="col-12 col-lg-6" id="cart_{{this.friend_id}}">
             <div class="card profile-header">
                 <div class="body-profile">
                     <div class="row">
@@ -19,12 +19,15 @@
                             </div>
                         </div>
                         <div class="col-lg-8 col-md-8 col-12">
-                            <h4 class="m-t-0 m-b-0"><strong>{{this.friendInfo.first_name}}</strong> {{this.friendInfo.last_name}}</h4>
+                            <h4 class="m-t-0 m-b-0"><strong>{{this.friendInfo.first_name}}</strong>
+                                {{this.friendInfo.last_name}}</h4>
                             <span class="job_post">{{this.friendInfo.username}}</span>
                             <p>{{this.friendInfo.address}}</p>
                             <div>
-                                <button class="btn btn-primary btn-round btn-simple">Message</button>
-                                <button class="btn btn-danger btn-round btn-simple">Unfriend</button>
+                                <button class="btn btn-primary btn-round btn-simple"
+                                    onclick="message({{this.friend_id}})">Message</button>
+                                <button class="btn btn-danger btn-round btn-simple"
+                                    onclick="unfriend({{this.friend_id}})">Unfriend</button>
                             </div>
                         </div>
                     </div>

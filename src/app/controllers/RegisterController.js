@@ -8,7 +8,8 @@ class RegisterController {
         } else {
             res.render('register/index', {
                 title: "Register",
-                style: "register.css"
+                style: "register.css",
+                script: "register.js"
             })
         }
     }

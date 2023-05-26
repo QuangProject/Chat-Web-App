@@ -19,14 +19,36 @@ class ListFriendController {
             return res.render('list-friend/index', {
                 title: "List Friends",
                 style: "list-friend.css",
+                script: "listFriend.js",
                 friends
             })
         }
         return res.render('list-friend/index', {
             title: "List Friends",
             style: "list-friend.css",
+            script: "listFriend.js",
             friends: []
         })
+    }
+
+    async unfriend(req, res) {
+        // Unfriend
+        const userId = req.session.user.user_id
+        const friendId = req.body.friendId
+
+        // unfriend user
+        const unfriend = await FriendShip.unfriend(userId, friendId)
+        if (unfriend.rowCount == 0) {
+            return res.status(500).json({ error: 'Error unfriending.' });
+        }
+
+        // unfriend friend
+        const unfriendFriend = await FriendShip.unfriend(friendId, userId)
+        if (unfriendFriend.rowCount == 0) {
+            return res.status(500).json({ error: 'Error unfriending.' });
+        }
+
+        return res.status(200).json({ message: 'Unfriend successfully.' });
     }
 }
 

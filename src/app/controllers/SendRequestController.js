@@ -6,7 +6,8 @@ class SendRequestController {
     index(req, res) {
         res.render('send-request/index', {
             title: "Send Request",
-            style: "send-request.css"
+            style: "send-request.css",
+            script: "sendRequest.js"
         })
     }
 

@@ -12,7 +12,8 @@ class UserController {
         res.render('user/profile', {
             user: user.rows[0],
             title: "Profile",
-            style: "profile.css"
+            style: "profile.css",
+            script: "profile.js"
         })
     }
 

@@ -20,4 +20,9 @@ FriendShip.getOne = (userId, friendId) => {
     return db.query(`SELECT * FROM friendships WHERE user_id = $1 AND friend_id = $2`, [userId, friendId]);
 };
 
+// UNFRIEND
+FriendShip.unfriend = (userId, friendId) => {
+    return db.query(`DELETE FROM friendships WHERE user_id = $1 AND friend_id = $2`, [userId, friendId]);
+};
+
 module.exports = { FriendShip };

@@ -23,12 +23,14 @@ class FriendRequestController {
             return res.render('list-request/index', {
                 title: "Friend Request",
                 style: "friend-request.css",
+                script: "listRequest.js",
                 friendRequests
             })
         }
         return res.render('list-request/index', {
             title: "Friend Request",
             style: "friend-request.css",
+            script: "listRequest.js",
             friendRequests: []
         })
     }
@@ -61,14 +63,14 @@ class FriendRequestController {
         if (addFriendObj2.rowCount == 0) {
             return res.status(400).json({ error: "Accept friend request failed" })
         }
-        return res.status(200).json({ message: "Accept friend request successfully" })
+        // return res.status(200).json({ message: "Accept friend request successfully" })
         // delete friend request
-        // const deleteObj = await FriendRequest.delete(friendRequestId)
-        // if (deleteObj.rowCount > 0) {
-        //     return res.status(200).json({ message: "Accept friend request successfully" })
-        // } else {
-        //     return res.status(400).json({ error: "Accept friend request failed" })
-        // }
+        const deleteObj = await FriendRequest.delete(friendRequestId)
+        if (deleteObj.rowCount > 0) {
+            return res.status(200).json({ message: "Accept friend request successfully" })
+        } else {
+            return res.status(400).json({ error: "Accept friend request failed" })
+        }
     }
 
     // reject friend request

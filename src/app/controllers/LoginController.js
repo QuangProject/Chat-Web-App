@@ -25,7 +25,8 @@ class LoginController {
         } else {
             res.render('login/index', {
                 title: "Login",
-                style: "login.css"
+                style: "login.css",
+                script: "login.js"
             })
         }
     }
@@ -108,6 +109,7 @@ class LoginController {
                     res.render('login/index', {
                         title: "Login",
                         style: "login.css",
+                        script: "login.js",
                         error: conflicError
                     })
                 });
@@ -119,6 +121,7 @@ class LoginController {
         res.render('login/index', {
             title: "Login",
             style: "login.css",
+            script: "login.js",
             error: conflicError
         })
     }
