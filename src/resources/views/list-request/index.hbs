@@ -1,9 +1,9 @@
 <div class="container profile-page">
     <h2 class="text-center mb-3 mt-2">Friend Request</h2>
-    <div class="row">
+    <div class="row" id="row_request">
         {{#if friendRequests }}
         {{#each friendRequests }}
-        <div class="col-12 col-lg-6" id="cart_{{this.sender_id}}">
+        <div class="col-12 col-lg-6" id="cart_{{this.request_id}}">
             <div class="card profile-header">
                 <div class="body-profile">
                     <div class="row">
@@ -23,9 +23,9 @@
                             <p>{{this.message}}</p>
                             <div>
                                 <button class="btn btn-success btn-round"
-                                    onclick="accept({{this.sender_id}})">Accept</button>
+                                    onclick="accept({{this.request_id}})">Accept</button>
                                 <button class="btn btn-danger btn-round btn-simple"
-                                    onclick="reject({{this.sender_id}})">Reject</button>
+                                    onclick="reject({{this.request_id}})">Reject</button>
                             </div>
                         </div>
                     </div>

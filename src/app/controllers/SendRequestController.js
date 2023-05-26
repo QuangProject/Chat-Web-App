@@ -26,7 +26,6 @@ class SendRequestController {
         const friend = friendObj.rows[0]
         const senderId = req.session.user.user_id
         const receiverId = friend.user_id
-        const status = "pending"
 
         // Check if user and friend already friend
         const checkFriend = await FriendShip.getOne(senderId, receiverId)
@@ -35,19 +34,19 @@ class SendRequestController {
         }
 
         // Check if user already send request to friend
-        const checkRequestWasSend = await FriendRequest.getOne(senderId, receiverId)
+        const checkRequestWasSend = await FriendRequest.checkRequestWasSend(senderId, receiverId)
         if (checkRequestWasSend.rowCount > 0) {
             return res.status(400).json({ error: "You already send request to this user" })
         }
 
         // Check if friend already send request to user
-        const checkRequestWasReceive = await FriendRequest.getOne(receiverId, senderId)
+        const checkRequestWasReceive = await FriendRequest.checkRequestWasReceive(receiverId, senderId)
         if (checkRequestWasReceive.rowCount > 0) {
             return res.status(400).json({ error: "This user already send request to you" })
         }
 
         // Create friend request
-        const requestObj = await FriendRequest.create(senderId, receiverId, message, status)
+        const requestObj = await FriendRequest.create(senderId, receiverId, message)
         if (requestObj.rowCount > 0) {
             return res.status(200).json({ message: "Send request successfully" })
         } else {

@@ -30,6 +30,12 @@ function unfriend(friendId) {
                         .fadeOut(800, function () {
                             $('#cart_' + friendId).remove()
                         })
+
+                    if (response.numberOfFriend == 0) {
+                        setTimeout(function () {
+                            $("#row_friend").append('<div class="col-12"><div class="alert alert-info" role="alert"><strong>Info!</strong> You do not have any friend.</div></div>')
+                        }, 850)
+                    }
                 },
                 error: function (error) {
                     console.error(error)

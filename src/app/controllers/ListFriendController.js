@@ -48,7 +48,15 @@ class ListFriendController {
             return res.status(500).json({ error: 'Error unfriending.' });
         }
 
-        return res.status(200).json({ message: 'Unfriend successfully.' });
+        // get row count of friendship table
+        FriendShip.getAll(userId)
+            .then((data) => {
+                return res.status(200).json({ message: 'Unfriend successfully.', numberOfFriend: data.rowCount });
+            })
+            .catch(() => {
+                return res.status(500).json({ error: 'Error unfriending.' });
+            });
+
     }
 }
 

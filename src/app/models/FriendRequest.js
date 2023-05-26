@@ -4,30 +4,30 @@ const db = require("../../config/db");
 const FriendRequest = {};
 
 // CREATE FRIEND REQUEST
-FriendRequest.create = (senderId, receiverId, message, status) => {
-    return db.query(`INSERT INTO friend_requests (sender_id, receiver_id, message, status) 
-                    VALUES($1, $2, $3, $4) RETURNING *`,
-        [senderId, receiverId, message, status]);
+FriendRequest.create = (senderId, receiverId, message) => {
+    return db.query(`INSERT INTO friend_requests (sender_id, receiver_id, message) 
+                    VALUES($1, $2, $3) RETURNING *`,
+        [senderId, receiverId, message]);
 };
 
-// GET ALL FRIEND REQUESTS
+// GET ALL FRIEND REQUESTS OF USER BY USER ID
 FriendRequest.getAll = (userId) => {
     return db.query(`SELECT * FROM friend_requests WHERE receiver_id = $1`, [userId]);
 };
 
-// GET ALL FRIEND REQUESTS PENDING
-FriendRequest.getAllPending = (userId) => {
-    return db.query(`SELECT * FROM friend_requests WHERE receiver_id = $1 AND status = 'pending'`, [userId]);
+// GET ONE FRIEND REQUEST
+FriendRequest.getOne = (requestId) => {
+    return db.query(`SELECT * FROM friend_requests WHERE request_id = $1`, [requestId]);
 };
 
-// CHECK IF USER ALREADY SEND REQUEST TO FRIEND
-FriendRequest.getOne = (senderId, receiverId) => {
+// Check if user already send request to friend
+FriendRequest.checkRequestWasSend = (senderId, receiverId) => {
     return db.query(`SELECT * FROM friend_requests WHERE sender_id = $1 AND receiver_id = $2`, [senderId, receiverId]);
 };
 
-// UPDATE FRIEND REQUEST
-FriendRequest.update = (senderId, receiverId, status) => {
-    return db.query(`UPDATE friend_requests SET status = $3 WHERE sender_id = $1 AND receiver_id = $2 RETURNING *`, [senderId, receiverId, status]);
+// Check if friend already send request to user
+FriendRequest.checkRequestWasReceive = (senderId, receiverId) => {
+    return db.query(`SELECT * FROM friend_requests WHERE sender_id = $1 AND receiver_id = $2`, [receiverId, senderId]);
 };
 
 // DELETE FRIEND REQUEST

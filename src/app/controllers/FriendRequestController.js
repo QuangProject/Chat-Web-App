@@ -6,7 +6,7 @@ class FriendRequestController {
     async index(req, res) {
         // get all friend request of user
         const userId = req.session.user.user_id
-        const friendRequestObj = await FriendRequest.getAllPending(userId)
+        const friendRequestObj = await FriendRequest.getAll(userId)
         if (friendRequestObj.rowCount > 0) {
             const friendRequests = friendRequestObj.rows
             // get info of sender
@@ -17,8 +17,6 @@ class FriendRequestController {
                     friendRequests[i].sender = sender
                 }
             }
-
-            // return res.json(friendRequests)
 
             return res.render('list-request/index', {
                 title: "Friend Request",
@@ -37,22 +35,17 @@ class FriendRequestController {
 
     // accept friend request
     async acceptRequest(req, res) {
-        // get friend request
-        const { friendId } = req.body
+        // get request id from body
+        const { requestId } = req.body
         const userId = req.session.user.user_id
-        const friendRequestObj = await FriendRequest.getOne(friendId, userId)
-        // check if friend request exists
+        
+        // check if request is exist
+        const friendRequestObj = await FriendRequest.getOne(requestId)
         if (friendRequestObj.rowCount == 0) {
             return res.status(400).json({ error: "Friend request not found" })
         }
-        // update friend request status
-        const friendRequest = friendRequestObj.rows[0]
-        const friendRequestId = friendRequest.request_id
-        const status = "accepted"
-        const updateObj = await FriendRequest.update(friendId, userId, status)
-        if (updateObj.rowCount == 0) {
-            return res.status(400).json({ error: "Accept friend request failed" })
-        }
+        
+        const friendId = friendRequestObj.rows[0].sender_id
         // add friend to friend list
         const addFriendObj = await FriendShip.create(userId, friendId)
         if (addFriendObj.rowCount == 0) {
@@ -63,11 +56,13 @@ class FriendRequestController {
         if (addFriendObj2.rowCount == 0) {
             return res.status(400).json({ error: "Accept friend request failed" })
         }
-        // return res.status(200).json({ message: "Accept friend request successfully" })
+        
         // delete friend request
-        const deleteObj = await FriendRequest.delete(friendRequestId)
+        const deleteObj = await FriendRequest.delete(requestId)
         if (deleteObj.rowCount > 0) {
-            return res.status(200).json({ message: "Accept friend request successfully" })
+            // get number of request
+            const friendRequestObj = await FriendRequest.getAll(userId)
+            return res.status(200).json({ message: "Accept friend request successfully", numberOfRequest: friendRequestObj.rowCount })
         } else {
             return res.status(400).json({ error: "Accept friend request failed" })
         }
@@ -75,27 +70,22 @@ class FriendRequestController {
 
     // reject friend request
     async rejectRequest(req, res) {
-        // get friend request
-        const { friendId } = req.body
+        // get request id from body
+        const { requestId } = req.body
         const userId = req.session.user.user_id
-        const friendRequestObj = await FriendRequest.getOne(friendId, userId)
-        // check if friend request exists
+
+        // check if request is exist
+        const friendRequestObj = await FriendRequest.getOne(requestId)
         if (friendRequestObj.rowCount == 0) {
             return res.status(400).json({ error: "Friend request not found" })
         }
-        // update friend request status
-        const friendRequest = friendRequestObj.rows[0]
-        const friendRequestId = friendRequest.request_id
-        const status = "rejected"
-        const updateObj = await FriendRequest.update(friendId, userId, status)
-        if (updateObj.rowCount == 0) {
-            return res.status(400).json({ error: "Reject friend request failed" })
-        }
-        // return res.status(200).json({ message: "Reject friend request successfully" })
+        
         // delete friend request
-        const deleteObj = await FriendRequest.delete(friendRequestId)
+        const deleteObj = await FriendRequest.delete(requestId)
         if (deleteObj.rowCount > 0) {
-            return res.status(200).json({ message: "Reject friend request successfully" })
+            // get number of request
+            const friendRequestObj = await FriendRequest.getAll(userId)
+            return res.status(200).json({ message: "Reject friend request successfully", numberOfRequest: friendRequestObj.rowCount })
         } else {
             return res.status(400).json({ error: "Reject friend request failed" })
         }

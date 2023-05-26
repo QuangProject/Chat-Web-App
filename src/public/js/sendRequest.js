@@ -16,7 +16,6 @@ $("#send-request-form").submit(function (e) {
     }
 
     const data = { friendUsername: username, message };
-    console.log(data);
 
     $.ajax({
         url: "/send-request/send",

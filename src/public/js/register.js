@@ -96,7 +96,7 @@ $("#register-form").submit(function (e) {
         success: function (result) {
             Swal.fire(
                 'Success',
-                result.msg,
+                result.message,
                 'success'
             ).then(() => {
                 window.location.href = '/login';
