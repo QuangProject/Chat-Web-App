@@ -1,3 +1,4 @@
+const m = require('gm')
 const { Message } = require('../models/Message')
 
 class MessageController {

@@ -10,9 +10,44 @@ require('dotenv').config()
 const db = require('./config/db')
 const route = require('./routes')
 const passport = require('passport');
+const expressWs = require('express-ws');
+expressWs(app);
 
 // Middleware for parsing JSON data
 app.use(bodyParser.json());
+
+const clients = [];
+
+// WebSocket route
+app.ws('/ws', (ws, req) => {
+    // Add the new client to the clients array
+    clients.push(ws);
+
+    // WebSocket connection established
+    console.log('WebSocket connection established');
+
+    // Handle WebSocket events
+    ws.on('message', (data) => {
+        // get json data from client side
+        const { UserId, message, avatar } = JSON.parse(data);
+
+        // Broadcast the message to all connected clients
+        clients.forEach((client) => {
+            client.send(JSON.stringify({ UserId, message, avatar }));
+        });
+    });
+
+    // Close the WebSocket connection
+    ws.on('close', () => {
+        // Remove the client from the clients array
+        const index = clients.indexOf(ws);
+        if (index !== -1) {
+            clients.splice(index, 1);
+        }
+
+        console.log('WebSocket connection closed');
+    });
+});
 
 app.use(express.static(path.join(__dirname, 'public')))
 

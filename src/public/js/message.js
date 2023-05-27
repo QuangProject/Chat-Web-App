@@ -1,3 +1,59 @@
+// get current user id
+const currentUserId = document.getElementById('current-user-id').value;
+
+const socket = new WebSocket('ws://localhost:3000/ws');
+// Handle WebSocket events
+socket.onopen = () => {
+    console.log('WebSocket connection established');
+};
+
+socket.onmessage = (event) => {
+    // Handle received messages
+    // get json data from server side
+    const { UserId, message, avatar } = JSON.parse(event.data);
+
+    // Create message item
+    const messageItem = document.createElement('div');
+    messageItem.classList.add('message');
+    messageItem.classList.add('animate__animated');
+    messageItem.classList.add('animate__fadeInUp');
+
+    // Create content
+    const messageContent = document.createElement('div');
+    messageContent.classList.add('message-content');
+    messageContent.textContent = message;
+
+    // Create avatar
+    const img = document.createElement('img');
+    if (avatar == null) {
+        avatar = '/img/default-avatar.png';
+    }
+    img.src = avatar;
+    img.alt = 'Avatar';
+    img.className = 'avatar-message';
+
+    if (currentUserId == UserId) {
+        messageItem.classList.add('sender');
+        messageItem.appendChild(messageContent);
+        messageItem.appendChild(img);
+        messageList.appendChild(messageItem);
+    } else {
+        messageItem.appendChild(img);
+        messageItem.appendChild(messageContent);
+        messageList.appendChild(messageItem);
+    }
+
+    // Clear input field
+    inputText.value = '';
+
+    // Scroll to the bottom of the message list
+    messageList.scrollTop = messageList.scrollHeight;
+};
+
+socket.onclose = () => {
+    console.log('WebSocket connection closed');
+};
+
 // Get necessary DOM elements
 const messageList = document.getElementById('message-list');
 const inputText = document.getElementById('input-text');
@@ -10,45 +66,20 @@ function sendMessage() {
     if (message !== '') {
         // send message to server
         const conversationId = window.location.pathname.split('/')[2];
-        const data = { conversationId, message };
         $.ajax({
             type: 'POST',
             url: '/message/create',
-            data: data,
+            data: {
+                conversationId: conversationId,
+                message: message
+            },
             success: function (response) {
-                console.log(response);
-                // Create message item
-                const messageItem = document.createElement('div');
-                messageItem.classList.add('message');
-                messageItem.classList.add('animate__animated');
-                messageItem.classList.add('animate__fadeInUp');
-                messageItem.classList.add('sender');
-
-                // Create content
-                const messageContent = document.createElement('div');
-                messageContent.classList.add('message-content');
-                messageContent.textContent = message;
-                messageItem.appendChild(messageContent);
-
-                // Create avatar
-                const img = document.createElement('img');
-                img.src = response.data.avatar;
-                img.alt = 'Avatar';
-                img.className = 'avatar-message';
-                messageItem.appendChild(img);
-
-                messageList.appendChild(messageItem);
-
-                // Clear input field
-                inputText.value = '';
-
-                // Scroll to the bottom of the message list
-                messageList.scrollTop = messageList.scrollHeight;
+                socket.send(JSON.stringify({ UserId: currentUserId, message, avatar: response.data.avatar }));
             },
             error: function (error) {
                 console.log(error);
             }
-        });
+        })
     }
 }
 
