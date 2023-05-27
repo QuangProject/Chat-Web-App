@@ -1,20 +1,27 @@
 <div class="inbox">
     <h2 class="text-center mb-3">List Inboxes</h2>
-    <a href="/message" class="message">
+    {{#if conversations}}
+    {{#each conversations}}
+    <a href="/message/{{this.conversation_id}}" class="message">
+        {{#if this.avatar}}
+        <img src="{{this.avatar}}" class="avatar" alt="Default Avatar">
+        {{else}}
         <img src="img/default-avatar.png" class="avatar" alt="Default Avatar">
+        {{/if}}
         <div class="details">
-            <h3 class="sender-name">John Doe</h3>
-            <p class="message-text">Hey, how are you?</p>
-            <p class="timestamp">10:30 AM</p>
+            <h3 class="sender-name">{{this.first_name}} {{this.last_name}}</h3>
+            {{#ifCond this.user_id '!=' this.sender_id}}
+            <p class="message-text">You: {{this.content}}</p>
+            {{else}}
+            <p class="message-text">{{this.first_name}}: {{this.content}}</p>
+            {{/ifCond}}
+            <p class="timestamp">{{dateFormat this.created_at 'HH:mm'}}</p>
         </div>
     </a>
-
-    <a href="/message" class="message">
-        <img src="img/default-avatar.png" class="avatar" alt="Default Avatar">
-        <div class="details">
-            <h3 class="sender-name">Jane Smith</h3>
-            <p class="message-text">Did you get my email?</p>
-            <p class="timestamp">Yesterday</p>
-        </div>
-    </a>
+    {{/each}}
+    {{else}}
+    <div class="alert alert-info" role="alert">
+        <strong>Info!</strong> No conversations found.
+    </div>
+    {{/if}}
 </div>

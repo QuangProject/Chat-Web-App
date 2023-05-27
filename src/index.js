@@ -29,11 +29,11 @@ app.ws('/ws', (ws, req) => {
     // Handle WebSocket events
     ws.on('message', (data) => {
         // get json data from client side
-        const { UserId, message, avatar } = JSON.parse(data);
+        const { UserId, message, avatar, conversationUsers } = JSON.parse(data);
 
         // Broadcast the message to all connected clients
         clients.forEach((client) => {
-            client.send(JSON.stringify({ UserId, message, avatar }));
+            client.send(JSON.stringify({ UserId, message, avatar, conversationUsers }));
         });
     });
 

@@ -1,5 +1,6 @@
-const m = require('gm')
+require('dotenv').config();
 const { Message } = require('../models/Message')
+const { Receipt } = require('../models/Receipt')
 
 class MessageController {
     async conversation(req, res) {
@@ -14,10 +15,15 @@ class MessageController {
             messagesArr[i].sender_id == userId ? messagesArr[i].isSender = true : messagesArr[i].isSender = false
         }
 
+        // get baseURL from .env
+        const baseURL = process.env.BASE_URL
+
+        // render to client
         res.render('message/index', {
             title: "Messages",
             style: "message.css",
             script: "message.js",
+            baseURL,
             userId,
             messages: messagesArr
         })
@@ -29,9 +35,16 @@ class MessageController {
         const userId = req.session.user.user_id
         // create a new message
         Message.create(conversationId, userId, message)
-            .then((result) => {
+            .then(async (result) => {
                 // get user information
                 const { user_id, username, first_name, last_name, avatar, status } = req.session.user
+
+                // create receipt
+                const receipt = await Receipt.create(result.rows[0].message_id, user_id)
+                if (receipt.rowCount == 0) {
+                    return res.status(500).json({ error: 'Error creating receipt.' });
+                }
+                
                 // send message to client
                 const data = {
                     sender_id: user_id,

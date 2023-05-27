@@ -1,7 +1,11 @@
 // get current user id
 const currentUserId = document.getElementById('current-user-id').value;
+// get conversation id from url
+const conversationId = window.location.pathname.split('/')[2];
+// get base url
+const baseURL = document.getElementById('base-url').value;
 
-const socket = new WebSocket('ws://localhost:3000/ws');
+const socket = new WebSocket('ws://' + baseURL + '/ws');
 // Handle WebSocket events
 socket.onopen = () => {
     console.log('WebSocket connection established');
@@ -10,44 +14,46 @@ socket.onopen = () => {
 socket.onmessage = (event) => {
     // Handle received messages
     // get json data from server side
-    const { UserId, message, avatar } = JSON.parse(event.data);
+    const { UserId, message, avatar, conversationUsers } = JSON.parse(event.data);
 
-    // Create message item
-    const messageItem = document.createElement('div');
-    messageItem.classList.add('message');
-    messageItem.classList.add('animate__animated');
-    messageItem.classList.add('animate__fadeInUp');
+    if (conversationUsers == conversationId) {
+        // Create message item
+        const messageItem = document.createElement('div');
+        messageItem.classList.add('message');
+        messageItem.classList.add('animate__animated');
+        messageItem.classList.add('animate__fadeInUp');
 
-    // Create content
-    const messageContent = document.createElement('div');
-    messageContent.classList.add('message-content');
-    messageContent.textContent = message;
+        // Create content
+        const messageContent = document.createElement('div');
+        messageContent.classList.add('message-content');
+        messageContent.textContent = message;
 
-    // Create avatar
-    const img = document.createElement('img');
-    if (avatar == null) {
-        avatar = '/img/default-avatar.png';
+        // Create avatar
+        const img = document.createElement('img');
+        if (avatar == null) {
+            avatar = '/img/default-avatar.png';
+        }
+        img.src = avatar;
+        img.alt = 'Avatar';
+        img.className = 'avatar-message';
+
+        if (currentUserId == UserId) {
+            messageItem.classList.add('sender');
+            messageItem.appendChild(messageContent);
+            messageItem.appendChild(img);
+            messageList.appendChild(messageItem);
+        } else {
+            messageItem.appendChild(img);
+            messageItem.appendChild(messageContent);
+            messageList.appendChild(messageItem);
+        }
+
+        // Clear input field
+        inputText.value = '';
+
+        // Scroll to the bottom of the message list
+        messageList.scrollTop = messageList.scrollHeight;
     }
-    img.src = avatar;
-    img.alt = 'Avatar';
-    img.className = 'avatar-message';
-
-    if (currentUserId == UserId) {
-        messageItem.classList.add('sender');
-        messageItem.appendChild(messageContent);
-        messageItem.appendChild(img);
-        messageList.appendChild(messageItem);
-    } else {
-        messageItem.appendChild(img);
-        messageItem.appendChild(messageContent);
-        messageList.appendChild(messageItem);
-    }
-
-    // Clear input field
-    inputText.value = '';
-
-    // Scroll to the bottom of the message list
-    messageList.scrollTop = messageList.scrollHeight;
 };
 
 socket.onclose = () => {
@@ -65,7 +71,6 @@ function sendMessage() {
 
     if (message !== '') {
         // send message to server
-        const conversationId = window.location.pathname.split('/')[2];
         $.ajax({
             type: 'POST',
             url: '/message/create',
@@ -74,7 +79,7 @@ function sendMessage() {
                 message: message
             },
             success: function (response) {
-                socket.send(JSON.stringify({ UserId: currentUserId, message, avatar: response.data.avatar }));
+                socket.send(JSON.stringify({ UserId: currentUserId, message, avatar: response.data.avatar, conversationUsers: conversationId }));
             },
             error: function (error) {
                 console.log(error);

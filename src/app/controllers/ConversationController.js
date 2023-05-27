@@ -11,7 +11,7 @@ class ConversationController {
         // how to check if conversation exist?
         const isExist = await Conversation.isExist(friendId, userId)
 
-        if (isExist.rowCount > 1) {
+        if (isExist.rowCount == 1) {
             return res.status(200).json({ message: 'Conversation already exist.', conversationId: isExist.rows[0].conversation_id });
         }
 
