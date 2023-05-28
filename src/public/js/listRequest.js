@@ -1,11 +1,13 @@
 // accept friend request
 function accept(requestId) {
+    $('body').append('<div class="overlay"><div class="dot-spinner center"><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div></div></div>')
     // send request to server
     $.ajax({
         url: '/list-request/accept',
         type: 'POST',
         data: { requestId },
         success: function (response) {
+            $('.overlay').remove()
             Swal.fire(
                 'Success',
                 response.message,
@@ -26,6 +28,8 @@ function accept(requestId) {
             }
         },
         error: function (error) {
+            $('.overlay').remove()
+            console.error(error)
             Swal.fire(
                 'Warning',
                 error.responseJSON.error,

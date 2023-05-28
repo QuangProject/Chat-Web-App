@@ -58,7 +58,7 @@ $("#profile-form").submit(function (e) {
     }
 
     var formData = new FormData(this);
-
+    $('body').append('<div class="overlay"><div class="dot-spinner center"><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div></div></div>')
     $.ajax({
         url: '/user/edit/profile',
         type: 'POST',
@@ -66,6 +66,7 @@ $("#profile-form").submit(function (e) {
         processData: false,
         contentType: false,
         success: function (response) {
+            $('.overlay').remove()
             Swal.fire(
                 'Success',
                 response.message,
@@ -75,6 +76,7 @@ $("#profile-form").submit(function (e) {
             })
         },
         error: function (error) {
+            $('.overlay').remove()
             Swal.fire(
                 'Error',
                 error.responseJSON.error,

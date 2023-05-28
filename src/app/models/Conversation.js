@@ -38,4 +38,9 @@ Conversation.isExist = (friendId, userId) => {
     return db.query(`SELECT * FROM participants WHERE user_id = $1 AND conversation_id IN (SELECT conversation_id FROM participants WHERE user_id = $2)`, [friendId, userId]);
 };
 
+// DELETE CONVERSATION
+Conversation.delete = (conversationId) => {
+    return db.query(`DELETE FROM conversations WHERE conversation_id = $1`, [conversationId]);
+};
+
 module.exports = { Conversation };

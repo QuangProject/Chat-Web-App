@@ -29,7 +29,7 @@ class UserController {
             const username = req.session.user.username
             User.getOne(username)
                 .then(data => {
-                    // Get infomation from form6
+                    // Get infomation from form
                     const { firstName, lastName, gender, birthday, telephone, address } = fields;
                     var user = data.rows[0]
                     // Check if the user uploaded a new avatar
@@ -68,14 +68,16 @@ class UserController {
                                             return res.status(500).json({ error: 'Error cropping the image.' });
                                         }
 
-                                        // Unlink the old avatar
-                                        const oldAvatar = `src/public${user.avatar}`;
-                                        fs.unlink(oldAvatar, (err) => {
-                                            if (err) {
-                                                console.error(err);
-                                                return res.status(500).json({ error: 'Error deleting the old avatar.' });
-                                            }
-                                        });
+                                        if (user.avatar != null) {
+                                            // Unlink the old avatar
+                                            const oldAvatar = `src/public${user.avatar}`;
+                                            fs.unlink(oldAvatar, (err) => {
+                                                if (err) {
+                                                    console.error(err);
+                                                    return res.status(500).json({ error: 'Error deleting the old avatar.' });
+                                                }
+                                            });
+                                        }
 
                                         mv(croppedImagePath, croppedImagePath, { mkdirp: true }, (err) => {
                                             if (err) {

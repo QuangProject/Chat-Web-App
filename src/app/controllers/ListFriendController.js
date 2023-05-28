@@ -1,5 +1,6 @@
 const { User } = require('../models/User');
 const { FriendShip } = require('../models/FriendShip');
+const { Conversation } = require('../models/Conversation')
 
 class ListFriendController {
     async index(req, res) {
@@ -40,6 +41,17 @@ class ListFriendController {
         const unfriend = await FriendShip.unfriend(userId, friendId)
         if (unfriend.rowCount == 0) {
             return res.status(500).json({ error: 'Error unfriending.' });
+        }
+
+        // check if conversation exist?
+        const isExist = await Conversation.isExist(friendId, userId)
+        if (isExist.rowCount == 1) {
+            const conversationId = isExist.rows[0].conversation_id
+            // delete conversation
+            const deleteConversation = await Conversation.delete(conversationId)
+            if (deleteConversation.rowCount == 0) {
+                return res.status(500).json({ error: 'Error unfriending.' });
+            }
         }
 
         // unfriend friend

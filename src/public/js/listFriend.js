@@ -10,6 +10,7 @@ function unfriend(friendId) {
         confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
         if (result.isConfirmed) {
+            $('body').append('<div class="overlay"><div class="dot-spinner center"><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div></div></div>')
             // Ajax unfriend
             $.ajax({
                 url: '/list-friend/unfriend',
@@ -18,6 +19,7 @@ function unfriend(friendId) {
                     friendId
                 },
                 success: function (response) {
+                    $('.overlay').remove()
                     Swal.fire(
                         'Success',
                         "Unfriend successfully.",
@@ -38,6 +40,7 @@ function unfriend(friendId) {
                     }
                 },
                 error: function (error) {
+                    $('.overlay').remove()
                     console.error(error)
                     if (error.status === 400) {
                         Swal.fire(
@@ -61,6 +64,7 @@ function unfriend(friendId) {
 
 // Message
 function message(friendId) {
+    $('body').append('<div class="overlay"><div class="dot-spinner center"><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div></div></div>')
     // send request to server
     $.ajax({
         url: '/conversation/create',
@@ -69,9 +73,11 @@ function message(friendId) {
             friendId
         },
         success: function (response) {
+            $('.overlay').remove()
             window.location.href = '/message/' + response.conversationId
         },
         error: function (error) {
+            $('.overlay').remove()
             console.error(error)
             if (error.status === 400) {
                 Swal.fire(

@@ -87,13 +87,15 @@ $("#register-form").submit(function (e) {
     }
 
     const data = { username, password, firstName, lastName, gender, birthday, email, telephone, address }
-
+    //get body
+    $('body').append('<div class="overlay"><div class="dot-spinner center"><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div></div></div>')
     $.ajax({
         url: "/register/save",
         type: "post",
         data: data,
 
         success: function (result) {
+            $('.overlay').remove()
             Swal.fire(
                 'Success',
                 result.message,
@@ -103,6 +105,7 @@ $("#register-form").submit(function (e) {
             })
         },
         error: function (error) {
+            $('.overlay').remove()
             console.error(error)
             if (error.status === 400) {
                 Swal.fire(

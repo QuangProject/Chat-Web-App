@@ -16,22 +16,18 @@ $("#login-form").submit(function (e) {
     }
 
     const data = { username, password }
-
+    $('body').append('<div class="overlay"><div class="dot-spinner center"><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div></div></div>')
     $.ajax({
         url: "/login/auth",
         type: "post",
         data: data,
 
         success: function (result) {
-            Swal.fire(
-                'Success',
-                result.message,
-                'success'
-            ).then((result) => {
-                window.location.href = '/';
-            })
+            $('.overlay').remove()
+            window.location.href = '/';
         },
         error: function (error) {
+            $('.overlay').remove()
             console.error(error)
             if (error.status === 400) {
                 Swal.fire(
