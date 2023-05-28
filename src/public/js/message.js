@@ -4,6 +4,10 @@ const currentUserId = document.getElementById('current-user-id').value;
 const conversationId = window.location.pathname.split('/')[2];
 // get base url
 const baseURL = document.getElementById('base-url').value;
+// Get necessary DOM elements
+const messageList = document.getElementById('message-list');
+const inputText = document.getElementById('input-text');
+const sendButton = document.getElementById('send-button');
 
 const socket = new WebSocket('ws://' + baseURL + '/ws');
 // Handle WebSocket events
@@ -48,11 +52,11 @@ socket.onmessage = (event) => {
             messageList.appendChild(messageItem);
         }
 
-        // Clear input field
-        inputText.value = '';
-
-        // Scroll to the bottom of the message list
-        messageList.scrollTop = messageList.scrollHeight;
+        // Wait for rendering to complete before scrolling
+        setTimeout(() => {
+            // Scroll to the bottom of the message list
+            messageList.scrollTop = messageList.scrollHeight;
+        }, 0);
     }
 };
 
@@ -60,16 +64,13 @@ socket.onclose = () => {
     console.log('WebSocket connection closed');
 };
 
-// Get necessary DOM elements
-const messageList = document.getElementById('message-list');
-const inputText = document.getElementById('input-text');
-const sendButton = document.getElementById('send-button');
-
 // Function to handle sending a message
 function sendMessage() {
     const message = inputText.value.trim();
 
     if (message !== '') {
+        // Clear input field
+        inputText.value = '';
         // send message to server
         $.ajax({
             type: 'POST',
