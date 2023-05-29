@@ -10,6 +10,7 @@ class InboxController {
         res.render('inbox/index', {
             title: "Inboxes",
             style: "inbox.css",
+            script: "inbox.js",
             conversations: conversations.rows
         })
     }

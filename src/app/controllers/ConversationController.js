@@ -7,7 +7,7 @@ class ConversationController {
         const { friendId } = req.body
         // get userId from session
         const userId = req.session.user.user_id
-        
+
         // how to check if conversation exist?
         const isExist = await Conversation.isExist(friendId, userId)
 
@@ -31,6 +31,24 @@ class ConversationController {
             return res.status(500).json({ error: 'Error creating participant.' });
         }
         return res.status(200).json({ message: 'Conversation created successfully.', conversationId });
+    }
+
+    async remove(req, res) {
+        // get conversationId from req.params
+        const { conversationId } = req.params
+        // delete conversation
+        const conversation = await Conversation.delete(conversationId)
+        if (conversation.rowCount == 0) {
+            return res.status(500).json({ error: 'Error deleting conversation.' });
+        }
+        // get all conversation of user
+        Conversation.findAll(req.session.user.user_id)
+            .then((data) => {
+                return res.status(200).json({ message: 'Conversation deleted successfully.', numberOfConversation: data.rowCount });
+            })
+            .catch(() => {
+                return res.status(500).json({ error: 'Error deleting conversation.' });
+            });
     }
 }
 

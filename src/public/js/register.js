@@ -16,6 +16,7 @@ $("#register-form").submit(function (e) {
     const telephoneInput = document.getElementById("register-telephone");
     const addressInput = document.getElementById("register-address");
     const registerError = document.getElementById("register-error");
+    registerError.textContent = "";
 
     const username = usernameInput.value;
     const password = passwordInput.value;

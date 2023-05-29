@@ -18,6 +18,7 @@ $("#profile-form").submit(function (e) {
     const telephoneInput = document.getElementById("telephone");
     const addressInput = document.getElementById("address");
     const profileError = document.getElementById("profile-error");
+    profileError.textContent = "";
 
     const firstName = firstNameInput.value;
     const lastName = lastNameInput.value;
@@ -61,7 +62,7 @@ $("#profile-form").submit(function (e) {
     $('body').append('<div class="overlay"><div class="dot-spinner center"><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div></div></div>')
     $.ajax({
         url: '/user/edit/profile',
-        type: 'POST',
+        type: 'PUT',
         data: formData,
         processData: false,
         contentType: false,
@@ -77,11 +78,20 @@ $("#profile-form").submit(function (e) {
         },
         error: function (error) {
             $('.overlay').remove()
-            Swal.fire(
-                'Error',
-                error.responseJSON.error,
-                'error'
-            )
+            if (error.status === 400) {
+                Swal.fire(
+                    'Warning',
+                    error.responseJSON.error,
+                    'warning'
+                )
+            }
+            if (error.status === 500) {
+                Swal.fire(
+                    'Error',
+                    error.responseJSON.error,
+                    'error'
+                )
+            }
         }
     });
 });
@@ -94,6 +104,7 @@ $("#change-password-form").submit(function (e) {
     const newPasswordInput = document.getElementById("newPassword");
     const reNewPasswordInput = document.getElementById("renewPassword");
     const changePasswordError = document.getElementById("change-password-error");
+    changePasswordError.textContent = "";
 
     const currentPassword = currentPasswordInput.value;
     const newPassword = newPasswordInput.value;
@@ -117,15 +128,17 @@ $("#change-password-form").submit(function (e) {
         return;
     }
 
+    $('body').append('<div class="overlay"><div class="dot-spinner center"><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div></div></div>')
     // Send request to server
     $.ajax({
         url: '/user/edit/password',
-        type: 'POST',
+        type: 'PUT',
         data: {
             oldPassword: currentPassword,
             newPassword: newPassword
         },
         success: function (response) {
+            $('.overlay').remove()
             Swal.fire(
                 'Success',
                 response.message,
@@ -135,11 +148,21 @@ $("#change-password-form").submit(function (e) {
             })
         },
         error: function (error) {
-            Swal.fire(
-                'Error',
-                error.responseJSON.error,
-                'error'
-            )
+            $('.overlay').remove()
+            if (error.status === 400) {
+                Swal.fire(
+                    'Warning',
+                    error.responseJSON.error,
+                    'warning'
+                )
+            }
+            if (error.status === 500) {
+                Swal.fire(
+                    'Error',
+                    error.responseJSON.error,
+                    'error'
+                )
+            }
         }
     });
 });

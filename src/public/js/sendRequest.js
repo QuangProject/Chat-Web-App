@@ -5,6 +5,7 @@ $("#send-request-form").submit(function (e) {
     const usernameInput = document.getElementById("username");
     const messageInput = document.getElementById("message");
     const sendRequestError = document.getElementById("send-request-error");
+    sendRequestError.textContent = "";
 
     const username = usernameInput.value;
     const message = messageInput.value;

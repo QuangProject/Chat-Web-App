@@ -5,6 +5,7 @@ $("#login-form").submit(function (e) {
     const usernameInput = document.getElementById("login-username");
     const passwordInput = document.getElementById("login-password");
     const loginError = document.getElementById("login-error");
+    loginError.textContent = "";
 
     const username = usernameInput.value;
     const password = passwordInput.value;
