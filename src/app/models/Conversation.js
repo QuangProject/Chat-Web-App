@@ -18,10 +18,11 @@ Conversation.findAll = (user_id) => {
                             WHERE user_id = $1
                         )) AS temp1
                     INNER JOIN (
-                        SELECT DISTINCT ON (c.conversation_id) c.conversation_id, m.sender_id, m.message_id, m.content, m.created_at
+                        SELECT DISTINCT ON (c.conversation_id) c.conversation_id, m.sender_id, m.message_id, m.content, m.created_at, r.receipt_id
                         FROM conversations c
                         JOIN messages m ON c.conversation_id = m.conversation_id
                         JOIN participants p ON c.conversation_id = p.conversation_id
+                        JOIN receipts r ON r.message_id = m.message_id
                         WHERE p.user_id = $1
                         ORDER BY c.conversation_id, m.created_at DESC
                     ) AS temp2 ON temp1.conversation_id = temp2.conversation_id ORDER BY created_at DESC;`,

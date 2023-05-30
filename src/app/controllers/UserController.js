@@ -68,7 +68,8 @@ class UserController {
                                             return res.status(500).json({ error: 'Error cropping the image.' });
                                         }
 
-                                        if (user.avatar != null) {
+                                        // Delete the temporary file
+                                        if (user.avatar != null && user.avatar.slice(0, 5) != 'https') {
                                             // Unlink the old avatar
                                             const oldAvatar = `src/public${user.avatar}`;
                                             fs.unlink(oldAvatar, (err) => {

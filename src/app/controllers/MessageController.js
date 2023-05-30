@@ -15,6 +15,14 @@ class MessageController {
             messagesArr[i].sender_id == userId ? messagesArr[i].isSender = true : messagesArr[i].isSender = false
         }
 
+        // get receipts is read of current user
+        const receipts = await Receipt.getReceiptOfConversation(userId, conversationId)
+        console.log(receipts.rows[0].is_read)
+        if (receipts.rows[0].is_read == false) {
+            // update receipts is read
+            await Receipt.update(receipts.rows[0].receipt_id)
+        }
+
         // get baseURL from .env
         const baseURL = process.env.BASE_URL
 
@@ -44,7 +52,7 @@ class MessageController {
                 if (receipt.rowCount == 0) {
                     return res.status(500).json({ error: 'Error creating receipt.' });
                 }
-                
+
                 // send message to client
                 const data = {
                     sender_id: user_id,

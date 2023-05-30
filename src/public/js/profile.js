@@ -78,6 +78,7 @@ $("#profile-form").submit(function (e) {
         },
         error: function (error) {
             $('.overlay').remove()
+            console.error(error)
             if (error.status === 400) {
                 Swal.fire(
                     'Warning',
@@ -148,6 +149,7 @@ $("#change-password-form").submit(function (e) {
             })
         },
         error: function (error) {
+            console.error(error)
             $('.overlay').remove()
             if (error.status === 400) {
                 Swal.fire(

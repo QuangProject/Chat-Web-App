@@ -13,27 +13,148 @@
                 <li><a href="/list-friend" class="nav-link px-3 link-dark">List Friend</a></li>
             </ul>
 
-            <div class="dropdown text-end d-flex">
-                {{#if user }}
-                <div>
-                    <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        {{#if user.avatar}}
-                        <img src="{{ user.avatar }}" alt="mdo" width="32" height="32" class="rounded-circle">
-                        {{else}}
-                        <img src="/img/default-avatar.png" alt="mdo" width="32" height="32" class="rounded-circle">
-                        {{/if}}
-                    </a>
-                    <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1" style="">
-                        <li><a class="dropdown-item" href="#">Hi, {{ user.username }}</a></li>
-                        <li><a class="dropdown-item" href="/user/profile">Profile</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
+            {{#if user }}
+            <div class="row">
+                <nav class="header-nav ms-auto">
+                    <ul class="d-flex align-items-center">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+                                <i class="fa-regular fa-bell fa-lg"></i>
+                                <span class="badge bg-primary badge-number">4</span>
+                            </a><!-- End Notification Icon -->
+
+                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+                                <li class="dropdown-header">
+                                    You have 4 new notifications
+                                    <a href="#">
+                                        <span class="badge rounded-pill bg-primary p-2 ms-2">
+                                            View
+                                            all
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+
+                                {{!-- <li class="notification-item">
+                                    <i class="fa-solid fa-circle-exclamation" style="color: #ffdd00;"></i>
+                                    <div>
+                                        <h4>Lorem Ipsum</h4>
+                                        <p>Quae dolorem earum veritatis oditseno</p>
+                                        <p>30 min. ago</p>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+
+                                <li class="notification-item">
+                                    <i class="fa-regular fa-circle-xmark" style="color: #ff0000;"></i>
+                                    <div>
+                                        <h4>Atque rerum nesciunt</h4>
+                                        <p>Quae dolorem earum veritatis oditseno</p>
+                                        <p>1 hr. ago</p>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+
+                                <li class="notification-item">
+                                    <i class="fa-sharp fa-regular fa-circle-check" style="color: #3ce000;"></i>
+                                    <div>
+                                        <h4>Sit rerum fuga</h4>
+                                        <p>Quae dolorem earum veritatis oditseno</p>
+                                        <p>2 hrs. ago</p>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li> --}}
+
+                                {{#if notifications}}
+                                {{#each notifications }}
+                                <li class="notification-item">
+                                    <i class="fa-solid fa-circle-info" style="color: #005eff;"></i>
+                                    <a href="/message/{{this.conversation_id}}" class="text-decoration-none text-dark">
+                                        <h4>You have message from {{this.first_name}}</h4>
+                                        {{!-- <p>Quae dolorem earum veritatis oditseno</p> --}}
+                                        <p>{{this.time_receipt}}</p>
+                                    </a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                {{/each}}
+                                {{else}}
+                                {{!-- Display do not have notification --}}
+                                <li class="notification-item">
+                                    <i class="fa-solid fa-circle-info" style="color: #005eff;"></i>
+                                    <div>
+                                        <h4>No notification found!</h4>
+                                    </div>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                {{/if}}
+
+                                <li class="dropdown-footer">
+                                    <a href="#" class="text-decoration-none">Show all notifications</a>
+                                </li>
+
+                            </ul><!-- End Notification Dropdown Items -->
+
                         </li>
-                        <li><a class="dropdown-item" id="sign-out">Sign out</a></li>
+
+                        <li class="nav-item dropdown pe-3">
+                            <a href="#" class="nav-link nav-profile d-flex align-items-center pe-0" href="#"
+                                data-bs-toggle="dropdown">
+                                {{#if user.avatar}}
+                                <img src="{{ user.avatar }}" alt="Profile" class="rounded-circle">
+                                {{else}}
+                                <img src="/img/default-avatar.png" alt="Profile" class="rounded-circle">
+                                {{/if}}
+                                <span class="d-none d-md-block dropdown-toggle ps-2"></span>
+                            </a>
+
+                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                                <li class="dropdown-header">
+                                    <h6>{{ user.username }}</h6>
+                                    <span></span>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center" href="/user/profile">
+                                        <i class="fa-regular fa-address-card"></i>
+                                        <span>My Profile</span>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+
+                                <li>
+                                    <button class="dropdown-item" id="sign-out">
+                                        <i class="fa-solid fa-right-from-bracket"></i>
+                                        Sign
+                                        out</button>
+                                </li>
+                            </ul><!-- End Profile Dropdown Items -->
+                        </li>
                     </ul>
-                </div>
-                {{else}}
+                </nav>
+            </div>
+            {{else}}
+            <div class="d-flex">
                 <a href="/login" class="btn-login me-2" role="button">
                     Login
                     <div class="arrow-wrapper">
@@ -46,8 +167,8 @@
                         <div class="arrow"></div>
                     </div>
                 </a>
-                {{/if}}
             </div>
+            {{/if}}
         </div>
     </div>
 </header>

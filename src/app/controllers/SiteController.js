@@ -11,7 +11,11 @@ class SiteController {
             req.session.destroy();
             res.redirect('/');
         } else {
-            res.render('login/index')
+            res.render('login/index', {
+                title: "Login",
+                style: "login.css",
+                script: "login.js"
+            })
         }
     }
 }
