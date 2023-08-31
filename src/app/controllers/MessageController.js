@@ -17,8 +17,8 @@ class MessageController {
 
         // get receipts is read of current user
         const receipts = await Receipt.getReceiptOfConversation(userId, conversationId)
-        console.log(receipts.rows[0].is_read)
-        if (receipts.rows[0].is_read == false) {
+        
+        if (receipts.rows[0] && receipts.rows[0].is_read == false) {
             // update receipts is read
             await Receipt.update(receipts.rows[0].receipt_id)
         }
